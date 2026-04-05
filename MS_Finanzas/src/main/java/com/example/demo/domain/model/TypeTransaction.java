@@ -1,6 +1,6 @@
 package  com.example.demo.domain.model;
 
-public enum TipoTransaccion {
+public enum TypeTransaction {
     INGRESO,
     GASTO,
     AHORRO

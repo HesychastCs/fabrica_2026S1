@@ -2,7 +2,7 @@ package com.example.demo.domain.model;
 
 import java.time.LocalDateTime;
 
-public record Usuario(
+public record User(
     Long id,
     String email,
     String nombre_completo,
