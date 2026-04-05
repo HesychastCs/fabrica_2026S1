@@ -1,13 +1,15 @@
-package com.example.demo.domain.model;
+package com.example.demo.infra.rest.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public record Transaction(
+import com.example.demo.domain.model.TypeTransaction;
+
+public record TransactionRequest(
     Long id,
     String nombre,
-    String descripcion,
     BigDecimal monto,
+    String descripcion,
     TypeTransaction tipoTransaccion,
     Instant fechaTransaccion
 ) {
