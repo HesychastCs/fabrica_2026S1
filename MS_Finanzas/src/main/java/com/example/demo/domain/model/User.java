@@ -1,12 +1,12 @@
 package com.example.demo.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record User(
-    Long id,
+    UUID id,
     String email,
-    String nombre_completo,
-    LocalDateTime fechaDeRegistro,
+    LocalDateTime fechaRegistro,
     String token
 ) {
 

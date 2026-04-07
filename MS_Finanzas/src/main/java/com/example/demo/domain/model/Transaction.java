@@ -2,14 +2,15 @@ package com.example.demo.domain.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 public record Transaction(
-    Long id,
+    UUID id,
     String nombre,
     String descripcion,
     BigDecimal monto,
-    TypeTransaction tipoTransaccion,
-    Instant fechaTransaccion
+    TypeTransaction tipo,
+    Instant fechaCreacion
 ) {
 
 }

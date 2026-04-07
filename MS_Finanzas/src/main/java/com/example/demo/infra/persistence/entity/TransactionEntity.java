@@ -1,10 +1,10 @@
 package com.example.demo.infra.persistence.entity;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.example.demo.domain.model.Category;
 import com.example.demo.domain.model.TypeTransaction;
 
 import jakarta.persistence.Column;
@@ -21,13 +21,13 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "transacciones")
+@Table(name = "transaccion")
 @Data
 public final class TransactionEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.UUID)
+    private UUID id;
 
     @Column(name="nombre", nullable=false)
     private String nombre;
@@ -36,14 +36,14 @@ public final class TransactionEntity {
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="tipo_transaccion", nullable=false)
-    private TypeTransaction tipoTransaccion;
+    @Column(name="tipo", nullable=false)
+    private TypeTransaction tipo;
 
     @CreationTimestamp
-    @Column(name="fecha_transaccion", nullable=false)
-    private Instant fechaTransaccion;
+    @Column(name="fecha_creacion", nullable=false)
+    private Instant fechaCreacion;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="categoria_id")
-    private Category categoria;
+    private CategoryEntity categoria;
 }
