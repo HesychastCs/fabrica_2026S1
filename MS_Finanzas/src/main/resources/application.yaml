@@ -1,3 +1,12 @@
 spring:
-  application:
-    name: demo
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ${SUPABASE_DB_PASSWORD}
+    url: jdbc:postgresql:postgres://db.aagdzusmeniqghpykyxs.supabase.co:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
