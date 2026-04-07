@@ -1,12 +1,23 @@
 spring:
+  application:
+    name: demo
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: ${SUPABASE_DB_PASSWORD}
-    url: jdbc:postgresql:postgres://db.aagdzusmeniqghpykyxs.supabase.co:5432/postgres
+    url: jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres
+    username: postgres.aagdzusmeniqghpykyxs
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 5
+      idle-timeout: 10000
+      max-lifetime: 30000
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
   cloud:
     config:
       enabled: false
