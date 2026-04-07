@@ -1,5 +1,6 @@
 package com.example.demo.infra.persistence.entity;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,6 +19,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Entity
@@ -29,11 +33,16 @@ public final class TransactionEntity {
     @GeneratedValue(strategy=GenerationType.UUID)
     private UUID id;
 
-    @Column(name="nombre", nullable=false)
+    @Column(name="nombre", nullable=false, length=150)
+    @NotBlank
     private String nombre;
 
     @Column(name="descripcion")
     private String descripcion;
+    
+    @Column(name="monto")
+    @Positive
+    private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
     @Column(name="tipo", nullable=false)
@@ -41,6 +50,7 @@ public final class TransactionEntity {
 
     @CreationTimestamp
     @Column(name="fecha_creacion", nullable=false)
+    @FutureOrPresent
     private Instant fechaCreacion;
 
     @ManyToOne(fetch = FetchType.EAGER)
