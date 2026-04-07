@@ -3,7 +3,6 @@ package com.example.demo.infra.persistence.entity;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.demo.domain.model.Transaction;
 import com.example.demo.domain.model.TypeCategory;
 
 import jakarta.persistence.CascadeType;
@@ -31,5 +30,5 @@ public class CategoryEntity {
     private TypeCategory tipo;
 
     @OneToMany(mappedBy="categoria", cascade={CascadeType.MERGE, CascadeType.PERSIST})
-    private List<Transaction> transacciones;
+    private List<TransactionEntity> transacciones;
 }
