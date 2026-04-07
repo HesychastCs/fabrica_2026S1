@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -24,6 +25,7 @@ public class CategoryEntity {
     private UUID id;
 
     @Column(name="nombre", nullable=false)
+    @NotBlank
     private String nombre;
         
     @Column(name="tipo", nullable=false)
