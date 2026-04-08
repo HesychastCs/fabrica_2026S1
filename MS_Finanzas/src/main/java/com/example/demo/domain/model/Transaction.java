@@ -10,7 +10,9 @@ public record Transaction(
     String descripcion,
     BigDecimal monto,
     TypeTransaction tipo,
-    Instant fechaCreacion
+    Instant fechaCreacion,
+    UUID categoriaId,
+    UUID usuarioId
 ) {
 
 }

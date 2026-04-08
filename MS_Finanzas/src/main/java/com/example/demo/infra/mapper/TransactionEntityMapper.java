@@ -1,5 +1,7 @@
 package com.example.demo.infra.mapper;
 
+import java.util.UUID;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,5 +14,11 @@ public interface TransactionEntityMapper {
     @Mapping(target = "categoria", ignore = true)
     TransactionEntity toEntity(Transaction transaction);
     
+    @Mapping(target = "categoriaId", source = "categoria.id")
+    @Mapping(target = "usuarioId", source = "usuarioId")
     Transaction toDomain(TransactionEntity transactionEntity);
+
+    default UUID stringToUuid(String uuid) {
+        return uuid == null ? null : UUID.fromString(uuid);
+    }
 }

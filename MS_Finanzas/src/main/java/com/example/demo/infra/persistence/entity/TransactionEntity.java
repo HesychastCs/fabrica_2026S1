@@ -56,4 +56,7 @@ public final class TransactionEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="categoria_id")
     private CategoryEntity categoria;
+
+    @Column(name="usuario_id", nullable=false)
+    private UUID usuarioId;
 }

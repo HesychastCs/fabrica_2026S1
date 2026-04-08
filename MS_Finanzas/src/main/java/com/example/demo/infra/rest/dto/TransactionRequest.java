@@ -8,7 +8,9 @@ public record TransactionRequest(
     String nombre,
     BigDecimal monto,
     String descripcion,
-    TypeTransaction tipo
+    TypeTransaction tipo,
+    String categoriaId,
+    String usuarioId
 ) {
 
 }

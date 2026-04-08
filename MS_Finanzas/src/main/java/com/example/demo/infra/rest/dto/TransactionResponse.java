@@ -12,7 +12,9 @@ public record TransactionResponse(
     BigDecimal monto,
     String descripcion,
     TypeTransaction tipo,
-    Instant fechaCreacion
+    Instant fechaCreacion,
+    String categoriaId,
+    String usuarioId
 ) {
 
 }

@@ -1,5 +1,7 @@
 package com.example.demo.infra.mapper;
 
+import java.util.UUID;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,4 +16,8 @@ public interface TransactionRequestMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "fechaCreacion", ignore = true)
     Transaction toDomain(TransactionRequest transactionRequest);
+
+    default UUID stringToUuid(String uuid) {
+        return uuid == null ? null : UUID.fromString(uuid);
+    }
 }
