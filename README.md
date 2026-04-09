@@ -8,6 +8,10 @@ Para comprender las reglas de negocio, entidades y la lógica detrás del diseñ
 
 * [📄 Documento de Levantamiento de DB](https://docs.google.com/document/d/e/2PACX-1vQ_sNxxsmPopm05YOHlikDXdLYVxVtgweipnubkBvjvNbYm3ywwlT36VLuH0-wrqJJmJI_qWXCa6piY/pub)
 
+## Consultas identificadas
+
+* [📄 Documento de consultas](https://docs.google.com/document/d/e/2PACX-1vQDvzR7agSKGfeGo2SFUgjkQ-XFR0nQBqiWQwW8XkKjuM--60wac5GJS4OYi3LSSo_UuOuU2yAeRSlb/pub)
+
 ---
 
 ## Modelos Físicos y Lógico de Base de Datos
