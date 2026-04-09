@@ -34,14 +34,14 @@ public final class TransactionEntity {
     private UUID transactionId;
 
     @Column(name="nombre", nullable=false, length=150)
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank")
     private String nombre;
 
     @Column(name="descripcion")
     private String descripcion;
     
     @Column(name="monto")
-    @Positive
+    @Positive(message = "Amount must be positive")
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
