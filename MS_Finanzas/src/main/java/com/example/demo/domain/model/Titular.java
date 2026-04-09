@@ -8,7 +8,10 @@ public record Titular(
     String nombre,
     String primerApellido,
     String segundoApellido,
+    String telefono,
     Instant fechaRegistro,
+    String monedaPreferida,
+    String zonaHoraria,
     String token
 ) {
 
