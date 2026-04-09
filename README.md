@@ -1,0 +1,5 @@
+# ENTREGABLES FÁBRICA ESCUELA 
+## BASES DE DATOS 
+[REDIRECCIONAMIENTO AL REPOSITORIO CON LA INFORMACIÓN DEL SPRINT 1](https://github.com/HesychastCs/fabrica_2026S1/tree/main/Entregables/BDatos)
+##ARQUITECTURA DE SOFTWARE 
+[REDIRECCIONAMIENTO AL REPOSITORIO CON LA INFORMACIÓN DEL SPRINT 1](https://github.com/HesychastCs/fabrica_2026S1/tree/main/Entregables/Arquitectura)
