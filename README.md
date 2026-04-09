@@ -10,9 +10,9 @@ Para comprender las reglas de negocio, entidades y la lógica detrás del diseñ
 
 ---
 
-## Modelos Lógicos de Base de Datos
+## Modelos Físicos de Base de Datos
 
-A continuación, se presentan los diagramas lógicos (MER) de cada microservicio. Puedes visualizarlos de forma interactiva en los siguientes enlaces:
+A continuación, se presentan los diagramas físicos (MER) de cada microservicio. Puedes visualizarlos de forma interactiva en los siguientes enlaces:
 
 ### 1. Microservicio de Seguridad y Autenticación
 Encargado de la gestión de usuarios, roles, permisos y el control de acceso al sistema.
