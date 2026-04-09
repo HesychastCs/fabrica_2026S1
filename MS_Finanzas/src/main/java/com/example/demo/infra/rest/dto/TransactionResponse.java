@@ -1,20 +1,20 @@
 package com.example.demo.infra.rest.dto;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.example.demo.domain.model.TypeTransaction;
 
 public record TransactionResponse(
-    UUID id,
+    UUID transactionId,
     String nombre,
     BigDecimal monto,
     String descripcion,
     TypeTransaction tipo,
-    Instant fechaCreacion,
+    LocalDate fecha,
     String categoriaId,
-    String usuarioId
+    String titularId
 ) {
 
 }

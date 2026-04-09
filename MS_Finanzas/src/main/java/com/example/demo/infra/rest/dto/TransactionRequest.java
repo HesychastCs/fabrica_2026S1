@@ -10,7 +10,7 @@ public record TransactionRequest(
     String descripcion,
     TypeTransaction tipo,
     String categoriaId,
-    String usuarioId
+    String titularId
 ) {
 
 }

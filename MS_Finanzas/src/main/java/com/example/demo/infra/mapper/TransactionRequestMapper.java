@@ -13,8 +13,8 @@ public interface TransactionRequestMapper {
 
     TransactionRequest toRequest(Transaction transaction);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fechaCreacion", ignore = true)
+    @Mapping(target = "transactionId", ignore = true)
+    @Mapping(target = "fecha", ignore = true)
     Transaction toDomain(TransactionRequest transactionRequest);
 
     default UUID stringToUuid(String uuid) {

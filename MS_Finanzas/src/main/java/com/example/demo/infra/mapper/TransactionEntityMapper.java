@@ -12,10 +12,11 @@ import com.example.demo.infra.persistence.entity.TransactionEntity;
 public interface TransactionEntityMapper {
 
     @Mapping(target = "categoria", ignore = true)
+    @Mapping(target = "titular", ignore = true)
     TransactionEntity toEntity(Transaction transaction);
     
-    @Mapping(target = "categoriaId", source = "categoria.id")
-    @Mapping(target = "usuarioId", source = "usuarioId")
+    @Mapping(target = "categoriaId", source = "categoria.categoriaId")
+    @Mapping(target = "titularId", source = "titular.titularId")
     Transaction toDomain(TransactionEntity transactionEntity);
 
     default UUID stringToUuid(String uuid) {

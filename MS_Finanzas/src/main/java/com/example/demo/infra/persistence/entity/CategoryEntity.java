@@ -3,36 +3,35 @@ package com.example.demo.infra.persistence.entity;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.demo.domain.model.TypeCategory;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "categorias")
 @Data
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
-    private UUID id;
+    private UUID categoriaId;
 
     @Column(name="nombre", nullable=false)
     @NotBlank
     private String nombre;
-        
-    @Column(name="tipo", nullable=false)
-    @Enumerated(EnumType.STRING)
-    private TypeCategory tipo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="titular_id")
+    private TitularEntity titular;
 
     @OneToMany(mappedBy="categoria", cascade={CascadeType.MERGE, CascadeType.PERSIST})
     private List<TransactionEntity> transacciones;

@@ -1,6 +1,8 @@
 package  com.example.demo.domain.model;
 
 public enum TypeTransaction {
-    INGRESO,
-    GASTO
+    ingreso,
+    gasto,
+    aporte_meta,
+    retiro_meta
 }

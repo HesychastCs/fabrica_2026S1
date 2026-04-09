@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 public record Category(
-    UUID id,
+    UUID categoriaId,
     String nombre,
-    TypeCategory tipo,
+    UUID titularId,
     List<Transaction> transacciones
 ) {
 
