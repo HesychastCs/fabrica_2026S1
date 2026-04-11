@@ -5,7 +5,7 @@ import java.util.UUID;
 public record Category(
     UUID categoriaId,
     String nombre,
-    UUID titularId
+    Titular titular
 ) {
 
 }

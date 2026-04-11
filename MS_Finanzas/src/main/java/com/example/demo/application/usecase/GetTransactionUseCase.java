@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.example.demo.domain.model.Transaction;
 
-public interface RetrieveTransactionUseCase {
+public interface GetTransactionUseCase {
     List<Transaction> findAll();
 }
