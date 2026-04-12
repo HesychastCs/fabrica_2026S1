@@ -3,10 +3,13 @@ package com.example.demo.application.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.example.demo.application.repository.TitularRepositoryPort;
 import com.example.demo.application.usecase.GetTitularUseCase;
 import com.example.demo.domain.model.Titular;
 
+@Service
 public class TitularService implements GetTitularUseCase {
 
     private final TitularRepositoryPort titularRepositoryPort;

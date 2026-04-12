@@ -11,8 +11,8 @@ public record Transaction(
     BigDecimal monto,
     TypeTransaction tipo,
     LocalDate fecha,
-    UUID categoriaId,
-    UUID titularId
+    Category categoria,
+    Titular titular
 ) {
 
 }

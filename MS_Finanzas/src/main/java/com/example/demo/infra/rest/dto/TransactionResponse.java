@@ -13,8 +13,8 @@ public record TransactionResponse(
     String descripcion,
     TypeTransaction tipo,
     LocalDate fecha,
-    String categoriaId,
-    String titularId
+    String nombreCategoria,
+    String nombreTitular
 ) {
 
 }

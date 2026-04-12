@@ -1,7 +1,5 @@
 package com.example.demo.infra.mapper;
 
-import java.util.UUID;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -11,13 +9,14 @@ import com.example.demo.infra.rest.dto.TransactionRequest;
 @Mapper(componentModel = "spring")
 public interface TransactionRequestMapper {
 
+    @Mapping(target = "categoriaId", source = "categoria.categoriaId")
+    @Mapping(target = "titularId", source = "titular.titularId")
     TransactionRequest toRequest(Transaction transaction);
 
-    @Mapping(target = "transactionId", ignore = true)
+    @Mapping(target = "categoria.categoriaId", source = "categoriaId")
+    @Mapping(target = "titular.titularId", source = "titularId")
     @Mapping(target = "fecha", ignore = true)
+    @Mapping(target = "transactionId", ignore = true)
     Transaction toDomain(TransactionRequest transactionRequest);
 
-    default UUID stringToUuid(String uuid) {
-        return uuid == null ? null : UUID.fromString(uuid);
-    }
 }

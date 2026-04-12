@@ -10,7 +10,6 @@ import com.example.demo.infra.persistence.entity.CategoryEntity;
 public interface CategoryEntityMapper {
     Category toDomainCategory(CategoryEntity categoryEntity);
 
-    @Mapping(target = "categoriaId", ignore = true)
     @Mapping(target = "transacciones", ignore = true)
     CategoryEntity toEntityCategory(Category category);
 }

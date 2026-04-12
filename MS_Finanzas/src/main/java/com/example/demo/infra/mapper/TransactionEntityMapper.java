@@ -15,8 +15,6 @@ public interface TransactionEntityMapper {
     @Mapping(target = "titular", ignore = true)
     TransactionEntity toEntity(Transaction transaction);
     
-    @Mapping(target = "categoriaId", source = "categoria.categoriaId")
-    @Mapping(target = "titularId", source = "titular.titularId")
     Transaction toDomain(TransactionEntity transactionEntity);
 
     default UUID stringToUuid(String uuid) {
