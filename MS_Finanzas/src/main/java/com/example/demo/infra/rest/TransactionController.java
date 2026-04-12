@@ -16,7 +16,7 @@ import com.example.demo.infra.mapper.TransactionRequestMapper;
 import com.example.demo.infra.mapper.TransactionResponseMapper;
 import com.example.demo.infra.rest.dto.TransactionRequest;
 import com.example.demo.infra.rest.dto.TransactionResponse;
-
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -33,9 +33,9 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
         List<Transaction> transactions = transactionService.findAll();
-        return new ResponseEntity<>(transactions, HttpStatus.OK);
+        return new ResponseEntity<>(transactions.stream().map(transactionResponseMapper::toResponse).collect(Collectors.toList()), HttpStatus.OK);
     }
     
 
