@@ -1,20 +1,15 @@
-FROM ubuntu:latest
-LABEL authors="jesustakethewheel09"
+FROM eclipse-temurin:21-jdk
 
-ENTRYPOINT ["top", "-b"]
-
-FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-COPY . .
-RUN mvn -B -DskipTests clean package && ls -la target/
-FROM eclipse-temurin:21-jre-jammy
-WORKDIR /app
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
 
-COPY --from=build /app/target/*.jar app.jar
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline
 
-# Exponemos el puerto 8080
-EXPOSE 8080
+COPY src src
 
-ENV JAVA_OPTS="-Xms300m -Xmx300m"
-ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar --server.port=${PORT:-8080}"]
+RUN ./mvnw clean package -DskipTests
+
+CMD ["sh", "-c", "java -Dserver.port=$PORT -jar target/*.jar"]
