@@ -3,22 +3,19 @@ LABEL authors="jesustakethewheel09"
 
 ENTRYPOINT ["top", "-b"]
 
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-COPY . .
+COPY pom.xml .
+COPY src ./src
 
-RUN mvn clean package -DskipTests
-
-
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponemos el puerto (Render usará uno dinámico, pero esto es buena práctica)
+# Exponemos el puerto 8080
 EXPOSE 8080
 
-# Comando para arrancar la aplicación
-# Limitamos la memoria RAM para que no se pase de los 512MB de Render
-ENTRYPOINT ["java", "-Xmx300m", "-Xms300m", "-jar", "app.jar"]
+ENV JAVA_OPTS="-Xms300m -Xmx300m"
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar --server.port=${PORT:-8080}"]
