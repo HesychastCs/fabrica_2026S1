@@ -1,5 +1,6 @@
 package com.example.demo.infra.persistence.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,11 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
     public Optional<Category> findById(UUID categoryId) {
         CategoryEntity savedCategoryEntity = jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("Categoria no encontrada"));
         return Optional.of(categoryEntityMapper.toDomainCategory(savedCategoryEntity));
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return jpaCategoryRepository.findAll().stream().map(categoryEntityMapper::toDomainCategory).toList();
     } 
 
 }

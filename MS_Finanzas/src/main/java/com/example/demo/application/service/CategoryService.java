@@ -1,5 +1,6 @@
 package com.example.demo.application.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,10 @@ public class CategoryService implements GetCategoryUseCase {
     @Override
     public Optional<Category> findById(UUID id) {
         return categoryRepositoryPort.findById(id);
+    }
+    @Override
+    public List<Category> findAll() {
+        return categoryRepositoryPort.findAll();
     }
 
 }
