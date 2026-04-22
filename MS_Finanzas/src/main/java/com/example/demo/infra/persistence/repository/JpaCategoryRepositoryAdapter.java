@@ -24,12 +24,19 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
     @Override
     public Optional<Category> findById(UUID categoryId) {
         CategoryEntity savedCategoryEntity = jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("Categoria no encontrada"));
-        return Optional.of(categoryEntityMapper.toDomainCategory(savedCategoryEntity));
+        return Optional.of(categoryEntityMapper.toDomain(savedCategoryEntity));
     }
 
     @Override
     public List<Category> findAll() {
-        return jpaCategoryRepository.findAll().stream().map(categoryEntityMapper::toDomainCategory).toList();
+        return jpaCategoryRepository.findAll().stream().map(categoryEntityMapper::toDomain).toList();
+    }
+
+    @Override
+    public Category save(Category category) {
+        CategoryEntity categoryEntity = categoryEntityMapper.toEntity(category);
+        CategoryEntity savedCategoryEntity = jpaCategoryRepository.save(categoryEntity);
+        return categoryEntityMapper.toDomain(savedCategoryEntity);
     } 
 
 }

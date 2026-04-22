@@ -7,11 +7,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.repository.CategoryRepositoryPort;
+import com.example.demo.application.usecase.CreateCategoryUseCase;
 import com.example.demo.application.usecase.GetCategoryUseCase;
 import com.example.demo.domain.model.Category;
 
 @Service
-public class CategoryService implements GetCategoryUseCase {
+public class CategoryService implements GetCategoryUseCase, CreateCategoryUseCase {
 
     private final CategoryRepositoryPort categoryRepositoryPort;
     
@@ -25,6 +26,10 @@ public class CategoryService implements GetCategoryUseCase {
     @Override
     public List<Category> findAll() {
         return categoryRepositoryPort.findAll();
+    }
+    @Override
+    public Category createCategory(Category category) {
+        return categoryRepositoryPort.save(category);
     }
 
 }

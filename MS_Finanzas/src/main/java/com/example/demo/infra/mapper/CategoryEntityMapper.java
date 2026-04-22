@@ -8,8 +8,8 @@ import com.example.demo.infra.persistence.entity.CategoryEntity;
 
 @Mapper(componentModel = "spring")
 public interface CategoryEntityMapper {
-    Category toDomainCategory(CategoryEntity categoryEntity);
+    Category toDomain(CategoryEntity categoryEntity);
 
     @Mapping(target = "transacciones", ignore = true)
-    CategoryEntity toEntityCategory(Category category);
+    CategoryEntity toEntity(Category category);
 }

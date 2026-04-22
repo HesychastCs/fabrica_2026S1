@@ -10,4 +10,6 @@ public interface CategoryRepositoryPort {
     Optional<Category> findById(UUID categoryId);
     
     List<Category> findAll();
+
+    Category save(Category category);
 }
