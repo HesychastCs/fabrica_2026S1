@@ -41,8 +41,13 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
     } 
 
     @Override
-    public Category update(Category category) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Category update(UUID categoryId, Category category) {
+        CategoryEntity existingCategoryEntity = jpaCategoryRepository.findById(categoryId)
+        .orElseThrow(() -> new ResourceNotFoundException("La categoria no fue encontrada"));
+        existingCategoryEntity.setNombre(category.nombre());
+        CategoryEntity updatedCategoryEntity = jpaCategoryRepository.save(existingCategoryEntity);
+        return categoryEntityMapper.toDomain(updatedCategoryEntity);
+
     }
 
     @Override

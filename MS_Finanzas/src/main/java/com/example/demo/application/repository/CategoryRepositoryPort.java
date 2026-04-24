@@ -10,6 +10,6 @@ public interface CategoryRepositoryPort {
     List<Category> findAll();
     Optional<Category> findById(UUID categoryId);
     Category save(Category category);
-    Category update(Category category);
+    Category update(UUID categoryId, Category category);
     void deleteById(UUID categoryId);
 }
