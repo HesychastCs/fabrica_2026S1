@@ -19,6 +19,8 @@ import com.example.demo.infra.mapper.CategoryResponseMapper;
 import com.example.demo.infra.rest.dto.CategoryRequest;
 import com.example.demo.infra.rest.dto.CategoryResponse;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/categories")
@@ -49,7 +51,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         Category category = categoryRequestMapper.toDomain(categoryRequest);
         Category createdCategory = categoryService.createCategory(category);
         return new ResponseEntity<>(categoryResponseMapper.toResponse(createdCategory), HttpStatus.CREATED);

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.application.repository.CategoryRepositoryPort;
+import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.Category;
 import com.example.demo.infra.mapper.CategoryEntityMapper;
 import com.example.demo.infra.persistence.entity.CategoryEntity;
@@ -23,7 +24,7 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Override
     public Optional<Category> findById(UUID categoryId) {
-        CategoryEntity savedCategoryEntity = jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("Categoria no encontrada"));
+        CategoryEntity savedCategoryEntity = jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("La categoria no fue encontrada"));
         return Optional.of(categoryEntityMapper.toDomain(savedCategoryEntity));
     }
 
@@ -39,4 +40,16 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return categoryEntityMapper.toDomain(savedCategoryEntity);
     } 
 
+    @Override
+    public Category update(Category category) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteById(UUID categoryId) {
+        if (!jpaCategoryRepository.existsById(categoryId)) {
+            throw new ResourceNotFoundException("La categoria no fue encontrada");
+        }
+        jpaCategoryRepository.deleteById(categoryId);
+    }
 }

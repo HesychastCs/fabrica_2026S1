@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
@@ -22,7 +21,6 @@ public class TitularEntity {
     private UUID titularId;
 
     @Column(name="nombre", nullable=false)
-    @NotEmpty(message = "Name cannot be empty")
     private String nombre;
 
     @Column(name="primer_apellido")

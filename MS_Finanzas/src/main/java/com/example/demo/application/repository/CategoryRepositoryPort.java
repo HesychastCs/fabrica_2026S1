@@ -7,9 +7,9 @@ import java.util.UUID;
 import com.example.demo.domain.model.Category;
 
 public interface CategoryRepositoryPort {
-    Optional<Category> findById(UUID categoryId);
-    
     List<Category> findAll();
-
+    Optional<Category> findById(UUID categoryId);
     Category save(Category category);
+    Category update(Category category);
+    void deleteById(UUID categoryId);
 }

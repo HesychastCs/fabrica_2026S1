@@ -14,7 +14,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -25,8 +24,7 @@ public class CategoryEntity {
     @GeneratedValue(strategy=GenerationType.UUID)
     private UUID categoriaId;
 
-    @Column(name="nombre", nullable=false)
-    @NotBlank
+    @Column(name="nombre", nullable=false, unique=true)
     private String nombre;
 
     @ManyToOne(fetch = FetchType.EAGER)
