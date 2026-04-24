@@ -7,18 +7,21 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.repository.CategoryRepositoryPort;
-import com.example.demo.application.usecase.CreateCategoryUseCase;
-import com.example.demo.application.usecase.GetCategoryUseCase;
+import com.example.demo.application.usecase.AddCategoryUseCase;
+import com.example.demo.application.usecase.RemoveCategoryUseCase;
+import com.example.demo.application.usecase.RetrieveCategoryUseCase;
+import com.example.demo.application.usecase.UpdateCategoryUseCase;
 import com.example.demo.domain.model.Category;
 
 @Service
-public class CategoryService implements GetCategoryUseCase, CreateCategoryUseCase {
+public class CategoryService implements AddCategoryUseCase, RetrieveCategoryUseCase, UpdateCategoryUseCase, RemoveCategoryUseCase {
 
     private final CategoryRepositoryPort categoryRepositoryPort;
     
     public CategoryService(CategoryRepositoryPort categoryRepositoryPort) {
         this.categoryRepositoryPort = categoryRepositoryPort;
     }
+
     @Override
     public Optional<Category> findById(UUID id) {
         return categoryRepositoryPort.findById(id);
@@ -28,8 +31,18 @@ public class CategoryService implements GetCategoryUseCase, CreateCategoryUseCas
         return categoryRepositoryPort.findAll();
     }
     @Override
-    public Category createCategory(Category category) {
+    public Category addCategory(Category category) {
         return categoryRepositoryPort.save(category);
+    }
+
+    @Override
+    public Category updateCategory(UUID categoryId, Category category) {
+        return categoryRepositoryPort.update(categoryId, category);
+    }
+
+    @Override
+    public void deleteCategoryById(UUID categoryId) {
+        categoryRepositoryPort.deleteById(categoryId);
     }
 
 }

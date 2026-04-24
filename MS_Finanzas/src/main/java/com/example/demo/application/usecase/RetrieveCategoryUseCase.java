@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.example.demo.domain.model.Category;
 
-public interface GetCategoryUseCase {
+public interface RetrieveCategoryUseCase {
     Optional<Category> findById(UUID categoryId);
     List<Category> findAll();
 }
