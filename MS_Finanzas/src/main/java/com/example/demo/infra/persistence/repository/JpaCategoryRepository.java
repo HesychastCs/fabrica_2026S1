@@ -9,5 +9,5 @@ import com.example.demo.infra.persistence.entity.CategoryEntity;
 
 @Repository
 public interface JpaCategoryRepository extends JpaRepository<CategoryEntity, UUID>{
-
+    boolean existsByNombre(String name);
 }

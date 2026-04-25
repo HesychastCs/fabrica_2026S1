@@ -1,6 +1,7 @@
 package com.example.demo.infra.persistence.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,11 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
         TransactionEntity transactionEntity = transactionEntityMapper.toEntity(transaction);
         TransactionEntity savedTransactionEntity = jpaTransactionRepository.save(transactionEntity);
         return transactionEntityMapper.toDomain(savedTransactionEntity);
+    }
+
+    @Override
+    public boolean existsByCategoryId(UUID categoryId) {
+        return jpaTransactionRepository.existsByCategoryId(categoryId);
     }
 
 }
