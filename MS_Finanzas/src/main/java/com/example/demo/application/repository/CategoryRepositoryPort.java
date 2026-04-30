@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.example.demo.domain.model.Category;
 
 public interface CategoryRepositoryPort {
-    boolean existsByName(String name);
+    
     List<Category> findAll();
     Optional<Category> findById(UUID categoryId);
     Category save(Category category);
@@ -15,4 +15,5 @@ public interface CategoryRepositoryPort {
     void deleteById(UUID categoryId);
 
     Optional<Category> findByNombreIgnoreCase(String nombre);
+    boolean existsByNameAndTitularId(String name, UUID titularId);
 }

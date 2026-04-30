@@ -39,7 +39,7 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Override
     public Category save(Category category) {
-        if (jpaCategoryRepository.existsByNombre(category.nombre())) {
+        if (jpaCategoryRepository.existsByNombreIgnoreCaseAndTitular_TitularId(category.nombre(), category.titular().titularId())) {
             throw new CategoryAlreadyExistsException(category.nombre());
         }
 
@@ -50,7 +50,7 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Override
     public Category update(UUID categoryId, Category category) {
-        if (jpaCategoryRepository.existsByNombre(category.nombre())) {
+        if (jpaCategoryRepository.existsByNombreIgnoreCaseAndTitular_TitularId(category.nombre(), category.titular().titularId())) {
             throw new CategoryAlreadyExistsException(category.nombre());
         }
 
@@ -76,8 +76,8 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
     }
 
     @Override
-    public boolean existsByName(String name) {
-        return jpaCategoryRepository.existsByNombre(name);
+    public boolean existsByNameAndTitularId(String name, UUID titularId) {
+        return jpaCategoryRepository.existsByNombreIgnoreCaseAndTitular_TitularId(name, titularId);
     }
 
     @Override
@@ -85,4 +85,5 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
         return jpaCategoryRepository.findByNombreIgnoreCase(nombre)
             .map(categoryEntityMapper::toDomain);
     }
+
 }

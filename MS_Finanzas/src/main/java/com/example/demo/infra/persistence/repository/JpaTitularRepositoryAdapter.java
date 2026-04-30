@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import com.example.demo.application.repository.TitularRepositoryPort;
 import com.example.demo.domain.model.Titular;
 import com.example.demo.infra.mapper.TitularEntityMapper;
-import com.example.demo.infra.persistence.entity.TitularEntity;
 
 @Component
 public class JpaTitularRepositoryAdapter implements TitularRepositoryPort {
