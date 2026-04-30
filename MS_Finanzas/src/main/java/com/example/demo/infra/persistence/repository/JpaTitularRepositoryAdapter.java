@@ -22,7 +22,7 @@ public class JpaTitularRepositoryAdapter implements TitularRepositoryPort {
 
     @Override
     public Optional<Titular> findById(UUID id) {
-        TitularEntity savedTitularEntity = jpaTitularRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Titular no encontrado"));
-        return Optional.of(titularEntityMapper.toDomainTitular(savedTitularEntity));
+        return jpaTitularRepository.findById(id)
+            .map(titularEntityMapper::toDomainTitular);
     }
 }
