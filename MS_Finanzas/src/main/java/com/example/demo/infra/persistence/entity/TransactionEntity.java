@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.example.demo.domain.model.TypeTransaction;
 
 import jakarta.persistence.Column;
@@ -19,8 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Entity
@@ -29,34 +25,31 @@ import lombok.Data;
 public final class TransactionEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
-    @Column(name="transaccion_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "transaccion_id")
     private UUID transactionId;
 
-    @Column(name="nombre", nullable=false, length=150)
-    @NotBlank(message = "Name cannot be blank")
+    @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
-    @Column(name="descripcion")
+    @Column(name = "descripcion")
     private String descripcion;
-    
-    @Column(name="monto")
-    @Positive(message = "Amount must be positive")
+
+    @Column(name = "monto", nullable = false)
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="tipo", nullable=false)
+    @Column(name = "tipo", nullable = false)
     private TypeTransaction tipo;
 
-    @CreationTimestamp
-    @Column(name="fecha_pago", nullable=false)
+    @Column(name = "fecha_pago", nullable = false)
     private LocalDate fecha;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="categoria_id")
+    @JoinColumn(name = "categoria_id")
     private CategoryEntity categoria;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="titular_id", nullable=false)
+    @JoinColumn(name = "titular_id", nullable = false)
     private TitularEntity titular;
 }

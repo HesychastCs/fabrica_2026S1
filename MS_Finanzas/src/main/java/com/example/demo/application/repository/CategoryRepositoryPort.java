@@ -13,4 +13,6 @@ public interface CategoryRepositoryPort {
     Category save(Category category);
     Category update(UUID categoryId, Category category);
     void deleteById(UUID categoryId);
+
+    Optional<Category> findByNombreIgnoreCase(String nombre);
 }

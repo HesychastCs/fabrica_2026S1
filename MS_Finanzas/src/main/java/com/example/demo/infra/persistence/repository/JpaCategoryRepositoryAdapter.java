@@ -28,8 +28,8 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
 
     @Override
     public Optional<Category> findById(UUID categoryId) {
-        CategoryEntity savedCategoryEntity = jpaCategoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("La categoria no fue encontrada"));
-        return Optional.of(categoryEntityMapper.toDomain(savedCategoryEntity));
+        return jpaCategoryRepository.findById(categoryId)
+            .map(categoryEntityMapper::toDomain);
     }
 
     @Override
@@ -78,5 +78,11 @@ public class JpaCategoryRepositoryAdapter implements CategoryRepositoryPort {
     @Override
     public boolean existsByName(String name) {
         return jpaCategoryRepository.existsByNombre(name);
+    }
+
+    @Override
+    public Optional<Category> findByNombreIgnoreCase(String nombre) {
+        return jpaCategoryRepository.findByNombreIgnoreCase(nombre)
+            .map(categoryEntityMapper::toDomain);
     }
 }
