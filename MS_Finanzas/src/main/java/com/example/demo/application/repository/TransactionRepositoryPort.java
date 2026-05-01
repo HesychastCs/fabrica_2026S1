@@ -25,8 +25,4 @@ public interface TransactionRepositoryPort {
     
     BigDecimal sumByTitularAndTypeAndMonth(UUID titularId, TypeTransaction type, Integer mes, Integer anho);
 
-    BigDecimal calculateNetBalanceByMonth(UUID titularId, Integer mes, Integer anho);
-    
-    BigDecimal calculateNetBalanceAllTime(UUID titularId);
-
 }

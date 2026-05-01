@@ -25,9 +25,9 @@ public interface JpaTransactionRepository extends JpaRepository<TransactionEntit
     @Query("""
         SELECT t FROM TransactionEntity t
         WHERE (:tipo IS NULL OR t.tipo = :tipo)
-          AND (:categoriaId IS NULL OR t.categoria.categoriaId = :categoriaId)
-          AND (:desde IS NULL OR t.fecha >= :desde)
-          AND (:hasta IS NULL OR t.fecha <= :hasta)
+            AND (:categoriaId IS NULL OR t.categoria.categoriaId = :categoriaId)
+            AND (:desde IS NULL OR t.fecha >= :desde)
+            AND (:hasta IS NULL OR t.fecha <= :hasta)
         ORDER BY t.fecha DESC, t.transactionId DESC
         """)
     List<TransactionEntity> findFiltered(
@@ -61,42 +61,5 @@ public interface JpaTransactionRepository extends JpaRepository<TransactionEntit
     BigDecimal sumByTitularAndType(
         @Param("titularId") UUID titularId,
         @Param("tipo") TypeTransaction tipo
-    );
-
-    @Query("""
-    SELECT COALESCE(SUM(
-        CASE 
-            WHEN t.tipo = 'ingreso' THEN t.monto
-            WHEN t.tipo = 'retiro_meta' THEN t.monto
-            WHEN t.tipo = 'gasto' THEN -t.monto
-            WHEN t.tipo = 'aporte_meta' THEN -t.monto
-            ELSE 0
-        END
-        ), 0)
-        FROM TransactionEntity t
-        WHERE t.titular.titularId = :titularId
-            AND YEAR(t.fecha) = :anho
-            AND MONTH(t.fecha) = :mes
-        """)
-    BigDecimal calculateNetBalanceByMonth(
-        @Param("titularId") UUID titularId,
-        @Param("anho") Integer anho,
-        @Param("mes") Integer mes
-    );
-    @Query("""
-        SELECT COALESCE(SUM(
-            CASE 
-                WHEN t.tipo = 'ingreso' THEN t.monto
-                WHEN t.tipo = 'retiro_meta' THEN t.monto
-                WHEN t.tipo = 'gasto' THEN -t.monto
-                WHEN t.tipo = 'aporte_meta' THEN -t.monto
-                ELSE 0
-            END
-        ), 0)
-        FROM TransactionEntity t
-        WHERE t.titular.titularId = :titularId
-        """)
-    BigDecimal calculateNetBalanceAllTime(
-        @Param("titularId") UUID titularId
     );
 }

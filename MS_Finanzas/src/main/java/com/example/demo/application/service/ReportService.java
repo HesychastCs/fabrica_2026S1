@@ -34,11 +34,11 @@ public class ReportService implements GenerateReportUseCase{
             .orElseThrow(() -> new ResourceNotFoundException("El titular no fue identificado"));
         
         // Calculate aggregates via port
-        BigDecimal ingresosAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndType(titularId, TypeTransaction.INGRESO));
-        BigDecimal gastosAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndType(titularId, TypeTransaction.GASTO));
-        BigDecimal aportesMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndType(titularId, TypeTransaction.APORTE_META));
-        BigDecimal retirosMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndType(titularId, TypeTransaction.RETIRO_META));
-        BigDecimal balanceNeto = nullToZero(transactionRepositoryPort.calculateNetBalanceAllTime(titularId));
+        BigDecimal ingresosAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.INGRESO, anho, mes));
+        BigDecimal gastosAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.GASTO, anho, mes));
+        BigDecimal aportesMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.APORTE_META, anho, mes));
+        BigDecimal retirosMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.RETIRO_META, anho, mes));
+        BigDecimal balanceNeto = ingresosAcumulados.subtract(gastosAcumulados).add(retirosMetaAcumulados).subtract(aportesMetaAcumulados);
         
         Report report = new Report(null, mes, anho, ingresosAcumulados, gastosAcumulados, 
             aportesMetaAcumulados.subtract(retirosMetaAcumulados), balanceNeto, Instant.now(), titular);

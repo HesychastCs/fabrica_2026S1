@@ -115,14 +115,5 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
         return jpaTransactionRepository.sumByTitularAndTypeAndMonth(titularId, type, mes, anho);
     }
 
-    @Override
-    public BigDecimal calculateNetBalance(UUID titularId, Integer mes, Integer anho) {
-        return jpaTransactionRepository.calculateNetBalanceByMonth(titularId, anho, mes);
-    }
-
-    @Override
-    public BigDecimal calculateNetBalanceAllTime(UUID titularId) {
-        return jpaTransactionRepository.calculateNetBalanceAllTime(titularId);
-    }
 }
 
