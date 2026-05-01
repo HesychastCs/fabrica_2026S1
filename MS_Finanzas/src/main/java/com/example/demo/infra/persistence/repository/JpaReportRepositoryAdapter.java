@@ -17,29 +17,7 @@ public class JpaReportRepositoryAdapter implements ReportRepositoryPort {
     }
 
     @Override
-    public Report save(Report report) {  // Note: rename from save()
-        // if (!jpaTitularRepository.existsById(titularId)) {
-        //     throw new ResourceNotFoundException("El titular no fue identificado");
-        // }
-        // TitularEntity titularEntity = jpaTitularRepository.findById(titularId).orElseThrow(() -> new ResourceNotFoundException("El titular no fue identificado"));
-            
-        // // Query transactions to calculate fields
-        // BigDecimal ingresosAcumulados = jpaTransactionRepository.sumByTitularAndType(titularId, TypeTransaction.ingreso);
-        // BigDecimal gastosAcumulados = jpaTransactionRepository.sumByTitularAndType(titularId, TypeTransaction.gasto);
-        // BigDecimal aportesMetaAcumulados = jpaTransactionRepository.sumByTitularAndType(titularId, TypeTransaction.aporte_meta);
-        // BigDecimal balanceNeto = jpaTransactionRepository.calculateNetBalanceAllTime(titularId);
-        
-        // Report reportWithValues = new Report(
-        //     null,
-        //     mes,
-        //     anho,
-        //     ingresosAcumulados,
-        //     gastosAcumulados,
-        //     aportesMetaAcumulados,
-        //     balanceNeto,
-        //     Instant.now(),
-        //     titularEntityMapper.toDomain(titularEntity)
-        // );
+    public Report save(Report report) {  
         ReportEntity reportEntity = reportEntityMapper.toEntity(report);
         ReportEntity savedReportEntity = jpaReportRepository.save(reportEntity);
         return reportEntityMapper.toDomain(savedReportEntity, savedReportEntity.getTitular());
