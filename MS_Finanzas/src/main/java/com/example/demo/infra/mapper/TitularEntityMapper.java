@@ -6,6 +6,6 @@ import com.example.demo.infra.persistence.entity.TitularEntity;
 
 @Mapper(componentModel = "spring")
 public interface TitularEntityMapper {
-    Titular toDomainTitular(TitularEntity titularEntity);
-    TitularEntity toEntityTitular(Titular titular);
+    Titular toDomain(TitularEntity titularEntity);
+    TitularEntity toEntity(Titular titular);
 }

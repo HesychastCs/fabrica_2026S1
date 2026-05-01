@@ -13,9 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 @Entity
@@ -24,6 +21,7 @@ import lombok.Data;
 public class ReportEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
+    @Column(name="reporte_id")
     private UUID reportId;
     
     @Column(nullable=false)
@@ -32,31 +30,23 @@ public class ReportEntity {
     @Column(nullable=false)
     private Integer anho;
 
-    @Column(nullable=false, scale=2)
-    @Digits(integer=15, fraction=2)
-    @DecimalMin(value="0.00", inclusive=true)
+    @Column(name="ingresos_acmds", nullable=false, scale=2)
     private BigDecimal ingresosAcumulados;
 
-    @Column(nullable=false, scale=2)
-    @Digits(integer=15, fraction=2)
-    @DecimalMin(value="0.00", inclusive=true)
+    @Column(name="gastos_acmds", nullable=false, scale=2)
     private BigDecimal gastosAcumulados;
     
-    @Column(nullable=false, scale=2)
-    @Digits(integer=15, fraction=2)
-    @DecimalMin(value="0.00", inclusive=true)
+    @Column(name="aportes_ahorros_acmds", nullable=false, scale=2)
     private BigDecimal aportesMetaAcumulados;
     
-    @Column(nullable=false, scale=2)
-    @Digits(integer=15, fraction=2)
+    @Column(name="balance_neto", nullable=false, scale=2)
     private BigDecimal balanceNeto;
 
-    @Column(nullable=false)
-    @PastOrPresent(message="La fecha de generación no puede ser futura")
+    @Column(name="fecha_generado", nullable=false)
     private Instant fechaGenerado;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="titular_id", nullable=false)
-    private UUID titularId;
+    private TitularEntity titular;
 
 }

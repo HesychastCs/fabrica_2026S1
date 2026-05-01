@@ -1,5 +1,6 @@
 package com.example.demo.infra.persistence.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -34,5 +35,68 @@ public interface JpaTransactionRepository extends JpaRepository<TransactionEntit
         @Param("categoriaId") UUID categoriaId,
         @Param("desde") LocalDate desde,
         @Param("hasta") LocalDate hasta
+    );
+
+    @Query("""
+        SELECT COALESCE(SUM(t.monto), 0)
+        FROM TransactionEntity t
+        WHERE t.titular.titularId = :titularId
+            AND t.tipo = :tipo
+            AND YEAR(t.fecha) = :anho
+            AND MONTH(t.fecha) = :mes
+        """)
+    BigDecimal sumByTitularAndTypeAndMonth(
+        @Param("titularId") UUID titularId,
+        @Param("tipo") TypeTransaction tipo,
+        @Param("anho") Integer anho,
+        @Param("mes") Integer mes
+    );
+
+    @Query("""
+        SELECT COALESCE(SUM(t.monto), 0)
+        FROM TransactionEntity t
+        WHERE t.titular.titularId = :titularId
+            AND t.tipo = :tipo
+        """)
+    BigDecimal sumByTitularAndType(
+        @Param("titularId") UUID titularId,
+        @Param("tipo") TypeTransaction tipo
+    );
+
+    @Query("""
+    SELECT COALESCE(SUM(
+        CASE 
+            WHEN t.tipo = 'ingreso' THEN t.monto
+            WHEN t.tipo = 'retiro_meta' THEN t.monto
+            WHEN t.tipo = 'gasto' THEN -t.monto
+            WHEN t.tipo = 'aporte_meta' THEN -t.monto
+            ELSE 0
+        END
+        ), 0)
+        FROM TransactionEntity t
+        WHERE t.titular.titularId = :titularId
+            AND YEAR(t.fecha) = :anho
+            AND MONTH(t.fecha) = :mes
+        """)
+    BigDecimal calculateNetBalanceByMonth(
+        @Param("titularId") UUID titularId,
+        @Param("anho") Integer anho,
+        @Param("mes") Integer mes
+    );
+    @Query("""
+        SELECT COALESCE(SUM(
+            CASE 
+                WHEN t.tipo = 'ingreso' THEN t.monto
+                WHEN t.tipo = 'retiro_meta' THEN t.monto
+                WHEN t.tipo = 'gasto' THEN -t.monto
+                WHEN t.tipo = 'aporte_meta' THEN -t.monto
+                ELSE 0
+            END
+        ), 0)
+        FROM TransactionEntity t
+        WHERE t.titular.titularId = :titularId
+        """)
+    BigDecimal calculateNetBalanceAllTime(
+        @Param("titularId") UUID titularId
     );
 }

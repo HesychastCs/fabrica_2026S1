@@ -22,6 +22,6 @@ public class JpaTitularRepositoryAdapter implements TitularRepositoryPort {
     @Override
     public Optional<Titular> findById(UUID id) {
         return jpaTitularRepository.findById(id)
-            .map(titularEntityMapper::toDomainTitular);
+            .map(titularEntityMapper::toDomain);
     }
 }
