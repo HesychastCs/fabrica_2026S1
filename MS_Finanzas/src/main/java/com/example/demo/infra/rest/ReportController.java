@@ -30,7 +30,7 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<ReportResponse> generateReport(@Valid @RequestBody ReportRequest reportRequest) {
         Report report = reportRequestMapper.toDomain(reportRequest);
-        Report generatedReport = reportService.generateReport(report);
+        Report generatedReport = reportService.generateReport(report.mes(), report.anho(),  report.titular().titularId());
         return ResponseEntity.ok(reportResponseMapper.toResponse(generatedReport));
 
     }
