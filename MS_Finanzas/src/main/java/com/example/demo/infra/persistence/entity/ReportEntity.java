@@ -30,16 +30,16 @@ public class ReportEntity {
     @Column(nullable=false)
     private Integer anho;
 
-    @Column(name="ingresos_acmds", nullable=false, scale=2)
+    @Column(name="ingresos_acmds", nullable=false, precision=15, scale=2)
     private BigDecimal ingresosAcumulados;
 
-    @Column(name="gastos_acmds", nullable=false, scale=2)
+    @Column(name="gastos_acmds", nullable=false, precision=15, scale=2)
     private BigDecimal gastosAcumulados;
     
-    @Column(name="aportes_ahorros_acmds", nullable=false, scale=2)
+    @Column(name="aportes_ahorros_acmds", nullable=false, precision=15, scale=2)
     private BigDecimal aportesMetaAcumulados;
     
-    @Column(name="balance_neto", nullable=false, scale=2)
+    @Column(name="balance_neto", nullable=false, precision=15, scale=2)
     private BigDecimal balanceNeto;
 
     @Column(name="fecha_generado", nullable=false)

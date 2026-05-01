@@ -1,5 +1,6 @@
 package com.example.demo.infra.persistence.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import com.example.demo.application.query.TransactionListFilter;
 import com.example.demo.application.repository.TransactionRepositoryPort;
 import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.Transaction;
+import com.example.demo.domain.model.TypeTransaction;
 import com.example.demo.infra.mapper.TransactionEntityMapper;
 import com.example.demo.infra.persistence.entity.CategoryEntity;
 import com.example.demo.infra.persistence.entity.TitularEntity;
@@ -101,4 +103,26 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
         entity.setCategoria(category);
         entity.setTitular(titular);
     }
+
+    @Override
+    public BigDecimal sumByTitularAndType(UUID titularId, TypeTransaction type) {
+        return jpaTransactionRepository.sumByTitularAndType(titularId, type);
+    }
+
+    @Override
+    public BigDecimal sumByTitularAndTypeAndMonth(UUID titularId, TypeTransaction type, Integer mes,
+            Integer anho) {
+        return jpaTransactionRepository.sumByTitularAndTypeAndMonth(titularId, type, mes, anho);
+    }
+
+    @Override
+    public BigDecimal calculateNetBalance(UUID titularId, Integer mes, Integer anho) {
+        return jpaTransactionRepository.calculateNetBalanceByMonth(titularId, anho, mes);
+    }
+
+    @Override
+    public BigDecimal calculateNetBalanceAllTime(UUID titularId) {
+        return jpaTransactionRepository.calculateNetBalanceAllTime(titularId);
+    }
 }
+
