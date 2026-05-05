@@ -68,7 +68,7 @@ class SavingGoalServiceTest {
                         assertThat(resultado.goalId()).isNotNull();
                         assertThat(resultado.nombre()).isEqualTo("Vacaciones 2026");
                         assertThat(resultado.montoObjetivo()).isEqualTo(5_000_000.0);
-                        assertThat(resultado.avance()).isEqualTo(0);
+                        assertThat(resultado.avance()).isZero();
                         assertThat(resultado.estado()).isEqualTo(GoalStatus.EN_PROGRESO);
                 }
 
@@ -168,8 +168,7 @@ class SavingGoalServiceTest {
                         SavingGoal metaActualizada = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
                                         nuevoAvance, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
 
-                        when(savingGoalRepositoryPort.updateAvance(eq(goalId), eq(nuevoAvance),
-                                        eq(GoalStatus.EN_PROGRESO)))
+                        when(savingGoalRepositoryPort.updateAvance(goalId, nuevoAvance, GoalStatus.EN_PROGRESO))
                                         .thenReturn(metaActualizada);
 
                         SavingGoal result = savingGoalRepositoryPort.updateAvance(goalId, nuevoAvance,
@@ -186,8 +185,7 @@ class SavingGoalServiceTest {
                         SavingGoal metaCompletada = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
                                         5_000_000, GoalStatus.COMPLETADA, LocalDate.now().plusMonths(6), titular);
 
-                        when(savingGoalRepositoryPort.updateAvance(eq(goalId), eq(5_000_000),
-                                        eq(GoalStatus.COMPLETADA)))
+                        when(savingGoalRepositoryPort.updateAvance(goalId, 5_000_000, GoalStatus.COMPLETADA))
                                         .thenReturn(metaCompletada);
 
                         SavingGoal result = savingGoalRepositoryPort.updateAvance(goalId, 5_000_000,

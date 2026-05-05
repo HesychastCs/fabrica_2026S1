@@ -56,13 +56,13 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
         log.info("=== TODAS LAS VALIDACIONES PASARON ===");
 
         SavingGoal goal = new SavingGoal(
-                    null,
-                    savingGoal.nombre(),
-                    savingGoal.montoObjetivo(),
-                    0,
-                    GoalStatus.EN_PROGRESO,
-                    savingGoal.fechaLimite(),
-                    savingGoal.titular());
+                null,
+                savingGoal.nombre(),
+                savingGoal.montoObjetivo(),
+                0,
+                GoalStatus.EN_PROGRESO,
+                savingGoal.fechaLimite(),
+                savingGoal.titular());
         return savingGoalRepositoryPort.save(goal);
     }
 
