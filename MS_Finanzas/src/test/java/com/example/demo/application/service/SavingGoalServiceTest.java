@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,11 +29,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-/**
- * Pruebas unitarias para SavingGoalService
- * Cubre HU-06 — Crear lista de meta de ahorro
- * HU-07 — Registrar aporte a una meta de ahorro
- */
 @ExtendWith(MockitoExtension.class)
 class SavingGoalServiceTest {
 
@@ -48,24 +44,16 @@ class SavingGoalServiceTest {
         @BeforeEach
         void setUp() {
                 titularId = UUID.randomUUID();
-                titular = new Titular(titularId, "Laura", "Ríos", "Muñoz",
+                titular = new Titular(titularId, "Laura", "Rios", "Munoz",
                                 "3207654321", Instant.now(), "COP", "America/Bogota", "token-xyz");
         }
 
-        // ─────────────────────────────────────────────────────────────────
-        // HU-06 — Crear lista de meta de ahorro
-        // ─────────────────────────────────────────────────────────────────
         @Nested
-        @DisplayName("HU-06 — Crear lista de meta de ahorro")
+        @DisplayName("HU-06 - Crear lista de meta de ahorro")
         class CrearMetaAhorro {
 
-                /**
-                 * CA-01 + CA-05 @happy-path
-                 * Crear meta con nombre y monto objetivo válidos →
-                 * estado EN_PROGRESO y avance 0%.
-                 */
                 @Test
-                @DisplayName("CA-01 CA-05 — Crear meta 'Vacaciones 2026' con 0% avance y estado EN_PROGRESO")
+                @DisplayName("CA-01 CA-05 - Crear meta Vacaciones 2026 con 0% avance y estado EN_PROGRESO")
                 void ca01_ca05_crearMetaBasicaExitosa() {
                         SavingGoal request = new SavingGoal(null, "Vacaciones 2026", 5_000_000.0,
                                         0, null, LocalDate.now().plusMonths(6), titular);
@@ -84,15 +72,11 @@ class SavingGoalServiceTest {
                         assertThat(resultado.estado()).isEqualTo(GoalStatus.EN_PROGRESO);
                 }
 
-                /**
-                 * CA-04 @happy-path
-                 * Fecha límite es opcional → se crea meta sin fecha límite exitosamente.
-                 */
                 @Test
-                @DisplayName("CA-04 — Crear meta 'Fondo Emergencia' sin fecha límite")
+                @DisplayName("CA-04 - Crear meta Fondo Emergencia sin fecha limite")
                 void ca04_crearMetaSinFechaLimite() {
                         SavingGoal request = new SavingGoal(null, "Fondo Emergencia", 3_000_000.0,
-                                        0, null, null, titular); // sin fecha límite
+                                        0, null, null, titular);
                         SavingGoal saved = new SavingGoal(UUID.randomUUID(), "Fondo Emergencia", 3_000_000.0,
                                         0, GoalStatus.EN_PROGRESO, null, titular);
 
@@ -105,15 +89,11 @@ class SavingGoalServiceTest {
                         assertThat(resultado.fechaLimite()).isNull();
                 }
 
-                /**
-                 * CA-02 @error-handling
-                 * Monto objetivo cero o negativo → IllegalArgumentException.
-                 */
                 @ParameterizedTest(name = "CA-02 | monto={0}")
                 @ValueSource(doubles = { 0.0, -1000.0 })
-                @DisplayName("CA-02 — Monto objetivo cero o negativo lanza excepción")
+                @DisplayName("CA-02 - Monto objetivo cero o negativo lanza excepcion")
                 void ca02_montoObjetivoInvalidoLanzaExcepcion(double monto) {
-                        SavingGoal request = new SavingGoal(null, "Meta Inválida", monto,
+                        SavingGoal request = new SavingGoal(null, "Meta Invalida", monto,
                                         0, null, LocalDate.now().plusMonths(1), titular);
 
                         assertThatThrownBy(() -> savingGoalService.addSavingGoal(request))
@@ -123,12 +103,8 @@ class SavingGoalServiceTest {
                         verify(savingGoalRepositoryPort, never()).save(any());
                 }
 
-                /**
-                 * CA-03 @error-handling
-                 * Fecha límite en el pasado → IllegalArgumentException.
-                 */
                 @Test
-                @DisplayName("CA-03 — Fecha límite en el pasado lanza excepción")
+                @DisplayName("CA-03 - Fecha limite en el pasado lanza excepcion")
                 void ca03_fechaLimiteEnElPasadoLanzaExcepcion() {
                         SavingGoal request = new SavingGoal(null, "Meta Pasada", 1_000_000.0,
                                         0, null, LocalDate.of(2020, 1, 1), titular);
@@ -140,9 +116,6 @@ class SavingGoalServiceTest {
                         verify(savingGoalRepositoryPort, never()).save(any());
                 }
 
-                /**
-                 * Nombre duplicado → DuplicateGoalNameException.
-                 */
                 @Test
                 @DisplayName("Nombre de meta duplicado lanza DuplicateGoalNameException")
                 void nombreDuplicadoLanzaExcepcion() {
@@ -158,11 +131,8 @@ class SavingGoalServiceTest {
                         verify(savingGoalRepositoryPort, never()).save(any());
                 }
 
-                /**
-                 * Nombre vacío → IllegalArgumentException.
-                 */
                 @Test
-                @DisplayName("Nombre vacío lanza IllegalArgumentException")
+                @DisplayName("Nombre vacio lanza IllegalArgumentException")
                 void nombreVacioLanzaExcepcion() {
                         SavingGoal request = new SavingGoal(null, "", 1_000_000.0,
                                         0, null, LocalDate.now().plusMonths(1), titular);
@@ -175,11 +145,8 @@ class SavingGoalServiceTest {
                 }
         }
 
-        // ─────────────────────────────────────────────────────────────────
-        // HU-07 — Registrar aporte a una meta de ahorro
-        // ─────────────────────────────────────────────────────────────────
         @Nested
-        @DisplayName("HU-07 — Registrar aporte a una meta de ahorro")
+        @DisplayName("HU-07 - Registrar aporte a una meta de ahorro")
         class RegistrarAporte {
 
                 private UUID goalId;
@@ -192,23 +159,19 @@ class SavingGoalServiceTest {
                                         0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
                 }
 
-                /**
-                 * CA-01 + CA-02 @happy-path
-                 * Aporte de 1.000.000 → acumulado sube a 1.000.000 y avance es 20%.
-                 */
                 @Test
-                @DisplayName("CA-01 CA-02 — Aporte aumenta acumulado y calcula porcentaje de avance correctamente")
+                @DisplayName("CA-01 CA-02 - Aporte aumenta acumulado y calcula porcentaje de avance correctamente")
                 void ca01_ca02_aporteAumentaAcumuladoYPorcentaje() {
                         int nuevoAvance = 1_000_000;
-                        int porcentajeEsperado = (int) ((nuevoAvance / metaEnProgreso.montoObjetivo()) * 100); // 20%
+                        int porcentajeEsperado = (int) ((nuevoAvance / metaEnProgreso.montoObjetivo()) * 100);
 
                         SavingGoal metaActualizada = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
                                         nuevoAvance, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+
                         when(savingGoalRepositoryPort.updateAvance(eq(goalId), eq(nuevoAvance),
                                         eq(GoalStatus.EN_PROGRESO)))
                                         .thenReturn(metaActualizada);
 
-                        // Simulamos la lógica de aporte directamente (el servicio delega updateAvance)
                         SavingGoal result = savingGoalRepositoryPort.updateAvance(goalId, nuevoAvance,
                                         GoalStatus.EN_PROGRESO);
 
@@ -217,21 +180,15 @@ class SavingGoalServiceTest {
                         assertThat(porcentajeReal).isEqualTo(porcentajeEsperado);
                 }
 
-                /**
-                 * CA-03 @happy-path
-                 * Aportes alcanzan el objetivo → estado cambia a COMPLETADA.
-                 */
                 @Test
-                @DisplayName("CA-03 — Meta se marca COMPLETADA al alcanzar el monto objetivo")
+                @DisplayName("CA-03 - Meta se marca COMPLETADA al alcanzar el monto objetivo")
                 void ca03_metaMarcadaCompletadaAlAlcanzarObjetivo() {
-                        // Meta con 4.500.000 acumulados, falta 500.000
-                        SavingGoal metaCasiCompleta = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
-                                        4_500_000, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
                         SavingGoal metaCompletada = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
                                         5_000_000, GoalStatus.COMPLETADA, LocalDate.now().plusMonths(6), titular);
 
                         when(savingGoalRepositoryPort.updateAvance(eq(goalId), eq(5_000_000),
-                                        eq(GoalStatus.COMPLETADA))).thenReturn(metaCompletada);
+                                        eq(GoalStatus.COMPLETADA)))
+                                        .thenReturn(metaCompletada);
 
                         SavingGoal result = savingGoalRepositoryPort.updateAvance(goalId, 5_000_000,
                                         GoalStatus.COMPLETADA);
@@ -240,17 +197,9 @@ class SavingGoalServiceTest {
                         assertThat(result.avance()).isEqualTo(5_000_000);
                 }
 
-                /**
-                 * CA-04 @error-handling
-                 * Meta ya completada → el repositorio no debe procesar nuevos aportes.
-                 */
                 @Test
-                @DisplayName("CA-04 — Meta COMPLETADA no permite nuevos aportes")
+                @DisplayName("CA-04 - Meta COMPLETADA no permite nuevos aportes")
                 void ca04_metaCompletadaNoPermiteNuevosAportes() {
-                        SavingGoal metaCompletada = new SavingGoal(goalId, "Vacaciones 2026", 5_000_000.0,
-                                        5_000_000, GoalStatus.COMPLETADA, LocalDate.now().plusMonths(6), titular);
-
-                        // El servicio debe lanzar excepción al intentar aportar a meta completada
                         when(savingGoalRepositoryPort.updateAvance(eq(goalId), anyInt(), any()))
                                         .thenThrow(new IllegalStateException("Esa meta ya fue alcanzada"));
 
@@ -260,9 +209,6 @@ class SavingGoalServiceTest {
                                         .hasMessageContaining("Esa meta ya fue alcanzada");
                 }
 
-                /**
-                 * Eliminar meta inexistente → SavingGoalNotFoundException.
-                 */
                 @Test
                 @DisplayName("Eliminar meta inexistente lanza SavingGoalNotFoundException")
                 void eliminarMetaInexistenteLanzaExcepcion() {
@@ -274,6 +220,97 @@ class SavingGoalServiceTest {
                                         .hasMessageContaining("Meta de ahorro no encontrada");
 
                         verify(savingGoalRepositoryPort, never()).deleteById(any());
+                }
+        }
+
+        @Nested
+        @DisplayName("Operaciones adicionales SavingGoalService")
+        class OperacionesAdicionales {
+
+                @Test
+                @DisplayName("findById - retorna meta existente")
+                void findById_retornaMetaExistente() {
+                        UUID goalId = UUID.randomUUID();
+                        SavingGoal meta = new SavingGoal(goalId, "Vacaciones", 5_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+
+                        when(savingGoalRepositoryPort.findById(goalId)).thenReturn(Optional.of(meta));
+
+                        Optional<SavingGoal> resultado = savingGoalService.findById(goalId);
+
+                        assertThat(resultado).isPresent();
+                        assertThat(resultado.get().nombre()).isEqualTo("Vacaciones");
+                }
+
+                @Test
+                @DisplayName("findById - retorna vacio si no existe")
+                void findById_retornaVacioSiNoExiste() {
+                        UUID idFalso = UUID.randomUUID();
+                        when(savingGoalRepositoryPort.findById(idFalso)).thenReturn(Optional.empty());
+
+                        Optional<SavingGoal> resultado = savingGoalService.findById(idFalso);
+
+                        assertThat(resultado).isEmpty();
+                }
+
+                @Test
+                @DisplayName("findAll - retorna lista de metas")
+                void findAll_retornaListaDeMetas() {
+                        SavingGoal meta = new SavingGoal(UUID.randomUUID(), "Vacaciones", 5_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+
+                        when(savingGoalRepositoryPort.findAll()).thenReturn(List.of(meta));
+
+                        List<SavingGoal> resultado = savingGoalService.findAll();
+
+                        assertThat(resultado).hasSize(1);
+                        assertThat(resultado.get(0).nombre()).isEqualTo("Vacaciones");
+                }
+
+                @Test
+                @DisplayName("updateSavingGoal - actualiza meta exitosamente")
+                void updateSavingGoal_exitoso() {
+                        UUID goalId = UUID.randomUUID();
+                        SavingGoal existente = new SavingGoal(goalId, "Vacaciones", 5_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+                        SavingGoal actualizada = new SavingGoal(goalId, "Vacaciones 2027", 6_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(12), titular);
+
+                        when(savingGoalRepositoryPort.findById(goalId)).thenReturn(Optional.of(existente));
+                        when(savingGoalRepositoryPort.existsByNombre("Vacaciones 2027")).thenReturn(false);
+                        when(savingGoalRepositoryPort.update(eq(goalId), any())).thenReturn(actualizada);
+
+                        SavingGoal resultado = savingGoalService.updateSavingGoal(goalId, actualizada);
+
+                        assertThat(resultado.nombre()).isEqualTo("Vacaciones 2027");
+                        assertThat(resultado.montoObjetivo()).isEqualTo(6_000_000.0);
+                }
+
+                @Test
+                @DisplayName("updateSavingGoal - meta no encontrada lanza SavingGoalNotFoundException")
+                void updateSavingGoal_noEncontrada() {
+                        UUID idFalso = UUID.randomUUID();
+                        SavingGoal actualizada = new SavingGoal(idFalso, "Vacaciones", 5_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+
+                        when(savingGoalRepositoryPort.findById(idFalso)).thenReturn(Optional.empty());
+
+                        assertThatThrownBy(() -> savingGoalService.updateSavingGoal(idFalso, actualizada))
+                                        .isInstanceOf(SavingGoalNotFoundException.class);
+                }
+
+                @Test
+                @DisplayName("deleteSavingGoalById - elimina meta exitosamente")
+                void deleteSavingGoalById_exitoso() {
+                        UUID goalId = UUID.randomUUID();
+                        SavingGoal meta = new SavingGoal(goalId, "Vacaciones", 5_000_000.0,
+                                        0, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+
+                        when(savingGoalRepositoryPort.findById(goalId)).thenReturn(Optional.of(meta));
+
+                        savingGoalService.deleteSavingGoalById(goalId);
+
+                        verify(savingGoalRepositoryPort).deleteById(goalId);
                 }
         }
 }
