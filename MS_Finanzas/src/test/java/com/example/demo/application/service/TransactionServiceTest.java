@@ -35,11 +35,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
-    @Mock private TransactionRepositoryPort transactionRepositoryPort;
-    @Mock private CategoryRepositoryPort categoryRepositoryPort;
-    @Mock private TitularRepositoryPort titularRepositoryPort;
+    @Mock
+    private TransactionRepositoryPort transactionRepositoryPort;
+    @Mock
+    private CategoryRepositoryPort categoryRepositoryPort;
+    @Mock
+    private TitularRepositoryPort titularRepositoryPort;
 
-    @InjectMocks private TransactionService transactionService;
+    @InjectMocks
+    private TransactionService transactionService;
 
     private Titular titularBase;
     private Category categoriaAlimentacion;
@@ -64,12 +68,13 @@ class TransactionServiceTest {
 
         /**
          * CA-01 @happy-path
-         * Registrar transacción INGRESO con nombre, monto y tipo → aparece en historial con tipo correcto.
+         * Registrar transacción INGRESO con nombre, monto y tipo → aparece en historial
+         * con tipo correcto.
          */
         @ParameterizedTest(name = "CA-01 | nombre={0}, monto={1}, tipo={2}")
         @CsvSource({
-            "Salario Enero,   3500000, INGRESO",
-            "Mercado Semanal,  150000, GASTO"
+                "Salario Enero,   3500000, INGRESO",
+                "Mercado Semanal,  150000, GASTO"
         })
         @DisplayName("CA-01 — Registrar transacción exitosamente (nombre, monto, tipo)")
         void ca01_registrarTransaccionExitosamente(String nombre, BigDecimal monto, TypeTransaction tipo) {
@@ -79,7 +84,7 @@ class TransactionServiceTest {
                     LocalDate.now(), categoriaAlimentacion, titularBase);
 
             when(titularRepositoryPort.findById(titularId)).thenReturn(Optional.of(titularBase));
-            when(categoryRepositoryPort.findByNombreIgnoreCase("Sin categoría")).thenReturn(Optional.of(categoriaAlimentacion));
+            when(categoryRepositoryPort.findByNombreIgnoreCase("Vacía")).thenReturn(Optional.of(categoriaAlimentacion));
             when(transactionRepositoryPort.save(any())).thenReturn(saved);
 
             Transaction result = transactionService.createTransaction(request);
@@ -103,7 +108,7 @@ class TransactionServiceTest {
                     BigDecimal.valueOf(50000), TypeTransaction.GASTO, null, null, titularBase);
 
             when(titularRepositoryPort.findById(titularId)).thenReturn(Optional.of(titularBase));
-            when(categoryRepositoryPort.findByNombreIgnoreCase("Sin categoría")).thenReturn(Optional.of(categoriaAlimentacion));
+            when(categoryRepositoryPort.findByNombreIgnoreCase("Vacía")).thenReturn(Optional.of(categoriaAlimentacion));
             when(transactionRepositoryPort.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
             Transaction result = transactionService.createTransaction(request);
@@ -113,7 +118,8 @@ class TransactionServiceTest {
 
         /**
          * CA-03 @happy-path
-         * Sin categoría seleccionada → guarda con "Sin categoría" y permite asignarla después.
+         * Sin categoría seleccionada → guarda con "Sin categoría" y permite asignarla
+         * después.
          */
         @Test
         @DisplayName("CA-03 — Guardar transacción sin categoría asigna 'Sin categoría'")
@@ -123,7 +129,7 @@ class TransactionServiceTest {
                     BigDecimal.valueOf(80000), TypeTransaction.GASTO, LocalDate.now(), null, titularBase);
 
             when(titularRepositoryPort.findById(titularId)).thenReturn(Optional.of(titularBase));
-            when(categoryRepositoryPort.findByNombreIgnoreCase("Sin categoría")).thenReturn(Optional.of(sinCategoria));
+            when(categoryRepositoryPort.findByNombreIgnoreCase("Vacía")).thenReturn(Optional.of(sinCategoria));
             when(transactionRepositoryPort.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
             Transaction result = transactionService.createTransaction(request);
@@ -133,7 +139,8 @@ class TransactionServiceTest {
 
         /**
          * CA-04 @error-handling
-         * Titular no encontrado → lanza ResourceNotFoundException (nombre de titular inválido).
+         * Titular no encontrado → lanza ResourceNotFoundException (nombre de titular
+         * inválido).
          */
         @Test
         @DisplayName("CA-04 — Titular no encontrado lanza excepción (campo obligatorio)")
@@ -151,22 +158,26 @@ class TransactionServiceTest {
         /**
          * CA-05 @error-handling
          * Monto cero o negativo → la validación de negocio no persiste la transacción.
-         * (El control se hace en el Bean Validation del controller, pero aquí verificamos
-         *  que el repositorio NO es llamado si el servicio recibe un monto inválido.)
+         * (El control se hace en el Bean Validation del controller, pero aquí
+         * verificamos
+         * que el repositorio NO es llamado si el servicio recibe un monto inválido.)
          */
         @ParameterizedTest(name = "CA-05 | monto={0}")
-        @CsvSource({"0", "-500", "-1"})
+        @CsvSource({ "0", "-500", "-1" })
         @DisplayName("CA-05 — Monto cero o negativo: repositorio no debe ser invocado")
         void ca05_montoInvalidoNoGuarda(BigDecimal monto) {
             // El servicio delega la validación del monto al Bean Validation (@Positive)
-            // pero si un monto inválido llegara, BigDecimal.ZERO o negativo no debe persistirse.
-            // Aquí verificamos que NO se llama save cuando el titular no existe con monto inválido.
+            // pero si un monto inválido llegara, BigDecimal.ZERO o negativo no debe
+            // persistirse.
+            // Aquí verificamos que NO se llama save cuando el titular no existe con monto
+            // inválido.
             Transaction request = new Transaction(null, "Test", null,
                     monto, TypeTransaction.GASTO, null, null, titularBase);
             when(titularRepositoryPort.findById(titularId)).thenReturn(Optional.of(titularBase));
-            when(categoryRepositoryPort.findByNombreIgnoreCase("Sin categoría")).thenReturn(Optional.of(categoriaAlimentacion));
+            when(categoryRepositoryPort.findByNombreIgnoreCase("Vacía")).thenReturn(Optional.of(categoriaAlimentacion));
             // Simulamos que save lanza excepción de constraint si monto es 0 o negativo
-            when(transactionRepositoryPort.save(any())).thenThrow(new IllegalArgumentException("El monto debe ser mayor a cero"));
+            when(transactionRepositoryPort.save(any()))
+                    .thenThrow(new IllegalArgumentException("El monto debe ser mayor a cero"));
 
             assertThatThrownBy(() -> transactionService.createTransaction(request))
                     .isInstanceOf(IllegalArgumentException.class)
@@ -195,7 +206,8 @@ class TransactionServiceTest {
                     BigDecimal.valueOf(150_000), TypeTransaction.GASTO,
                     LocalDate.of(2026, 1, 20), categoriaAlimentacion, titularBase);
 
-            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(), Optional.empty());
+            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(),
+                    Optional.empty());
             when(transactionRepositoryPort.findAll(filter)).thenReturn(List.of(t1, t2));
 
             List<Transaction> result = transactionService.findAll(filter);
@@ -224,7 +236,8 @@ class TransactionServiceTest {
                     BigDecimal.valueOf(20_000), TypeTransaction.GASTO,
                     LocalDate.of(2026, 3, 15), categoriaAlimentacion, titularBase);
 
-            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(), Optional.empty());
+            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(),
+                    Optional.empty());
             when(transactionRepositoryPort.findAll(filter)).thenReturn(List.of(reciente, antigua));
 
             List<Transaction> result = transactionService.findAll(filter);
@@ -239,7 +252,8 @@ class TransactionServiceTest {
         @Test
         @DisplayName("CA-03 — Historial vacío retorna lista vacía")
         void ca03_historialSinTransacciones() {
-            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(), Optional.empty());
+            TransactionListFilter filter = new TransactionListFilter(Optional.empty(), Optional.empty(),
+                    Optional.empty());
             when(transactionRepositoryPort.findAll(filter)).thenReturn(List.of());
 
             List<Transaction> result = transactionService.findAll(filter);
@@ -251,14 +265,15 @@ class TransactionServiceTest {
          * CA-04 Filtrar por tipo (INGRESO / GASTO).
          */
         @ParameterizedTest(name = "Filtro por tipo={0}")
-        @CsvSource({"INGRESO", "GASTO"})
+        @CsvSource({ "INGRESO", "GASTO" })
         @DisplayName("CA-04 — Filtrar transacciones por tipo")
         void ca04_filtrarPorTipo(TypeTransaction tipo) {
             Transaction tx = new Transaction(UUID.randomUUID(), "Test", null,
                     BigDecimal.valueOf(100_000), tipo,
                     LocalDate.now(), categoriaAlimentacion, titularBase);
 
-            TransactionListFilter filter = new TransactionListFilter(Optional.of(tipo), Optional.empty(), Optional.empty());
+            TransactionListFilter filter = new TransactionListFilter(Optional.of(tipo), Optional.empty(),
+                    Optional.empty());
             when(transactionRepositoryPort.findAll(filter)).thenReturn(List.of(tx));
 
             List<Transaction> result = transactionService.findAll(filter);
