@@ -36,4 +36,4 @@ jobs:
         working-directory: ./MS_Finanzas
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=fabrica20261-calidad
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fabrica20261-calidad_fabrica_2026S1 -Dsonar.organization=fabrica20261-calidad
