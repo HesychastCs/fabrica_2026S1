@@ -61,7 +61,7 @@ public class TransactionController {
         );
         List<Transaction> transactions = transactionService.findAll(filter);
         return ResponseEntity.ok(
-            transactions.stream().map(transactionResponseMapper::toResponse).collect(Collectors.toList())
+            transactions.stream().map(transactionResponseMapper::toResponse).toList()
         );
     }
 
