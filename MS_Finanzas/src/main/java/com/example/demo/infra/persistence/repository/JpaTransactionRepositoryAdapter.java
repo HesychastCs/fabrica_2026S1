@@ -45,7 +45,7 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
         LocalDate desde = null;
         LocalDate hasta = null;
         if (filter.mes().isPresent()) {
-            var ym = filter.mes().get();
+            YearMonth ym = filter.mes().get();
             desde = ym.atDay(1);
             hasta = ym.atEndOfMonth();
         }

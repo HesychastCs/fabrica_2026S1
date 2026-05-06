@@ -59,18 +59,13 @@ class TransactionServiceTest {
         categoriaAlimentacion = new Category(categoriaId, "Alimentación", titularBase);
     }
 
-    // ─────────────────────────────────────────────────────────────────
+    
     // HU-01 — Registrar una transacción financiera
-    // ─────────────────────────────────────────────────────────────────
+
     @Nested
     @DisplayName("HU-01 — Registrar una transacción financiera")
     class RegistrarTransaccion {
 
-        /**
-         * CA-01 @happy-path
-         * Registrar transacción INGRESO con nombre, monto y tipo → aparece en historial
-         * con tipo correcto.
-         */
         @ParameterizedTest(name = "CA-01 | nombre={0}, monto={1}, tipo={2}")
         @CsvSource({
                 "Salario Enero,   3500000, INGRESO",
@@ -97,10 +92,7 @@ class TransactionServiceTest {
             verify(transactionRepositoryPort).save(any(Transaction.class));
         }
 
-        /**
-         * CA-02 @happy-path
-         * Sin fecha → el sistema asigna la fecha actual.
-         */
+       
         @Test
         @DisplayName("CA-02 — Asignación automática de fecha cuando no se ingresa")
         void ca02_asignacionAutomaticaDeFecha() {
@@ -116,11 +108,7 @@ class TransactionServiceTest {
             assertThat(result.fecha()).isEqualTo(LocalDate.now());
         }
 
-        /**
-         * CA-03 @happy-path
-         * Sin categoría seleccionada → guarda con "Sin categoría" y permite asignarla
-         * después.
-         */
+    
         @Test
         @DisplayName("CA-03 — Guardar transacción sin categoría asigna 'Sin categoría'")
         void ca03_guardarSinCategoria() {
@@ -313,10 +301,11 @@ class TransactionServiceTest {
 
             Optional<Transaction> result = transactionService.findById(txId);
 
-            assertThat(result).isPresent();
-            assertThat(result.get().nombre()).isEqualTo("Compra Supermercado");
-            assertThat(result.get().monto()).isEqualByComparingTo(BigDecimal.valueOf(200_000));
-            assertThat(result.get().tipo()).isEqualTo(TypeTransaction.GASTO);
+            assertThat(result).hasValueSatisfying(tx -> {
+                assertThat(tx.nombre()).isEqualTo("Compra Supermercado");
+                assertThat(tx.monto()).isEqualByComparingTo(BigDecimal.valueOf(200_000));
+                assertThat(tx.tipo()).isEqualTo(TypeTransaction.GASTO);
+            });
         }
 
         /**

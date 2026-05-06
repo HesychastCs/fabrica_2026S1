@@ -96,9 +96,11 @@ public class TransactionService implements
             return categoryRepositoryPort.findById(categoriaPartial.categoriaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
         }
+        
         return categoryRepositoryPort.findByNombreIgnoreCase(EmptyCategoryConstants.NAME)
-            .orElseGet(() -> categoryRepositoryPort.save(
-                new Category(null, EmptyCategoryConstants.NAME, null)
-            ));
+            .orElseGet(() -> {
+                Category emptyCategory = new Category(null, EmptyCategoryConstants.NAME, null);
+                return categoryRepositoryPort.save(emptyCategory);
+            });
     }
 }
