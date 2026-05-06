@@ -43,13 +43,13 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
     public List<Transaction> findAll(TransactionListFilter filter) {
         var tipo = filter.tipo().orElse(null);
         var categoriaId = filter.categoriaId().orElse(null);
-        LocalDate desde = null;
-        LocalDate hasta = null;
-        if (filter.mes().isPresent()) {
-            YearMonth ym = filter.mes().get();
-            desde = ym.atDay(1);
-            hasta = ym.atEndOfMonth();
-        }
+        LocalDate[] range = new LocalDate[2];
+        filter.mes().ifPresent(ym -> {
+            range[0] = ym.atDay(1);
+            range[1] = ym.atEndOfMonth();
+        });
+        LocalDate desde = range[0];
+        LocalDate hasta = range[1];
         return jpaTransactionRepository.findFiltered(tipo, categoriaId, desde, hasta)
             .stream()
             .map(transactionEntityMapper::toDomain)

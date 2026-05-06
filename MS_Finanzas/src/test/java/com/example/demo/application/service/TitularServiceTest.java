@@ -49,10 +49,11 @@ class TitularServiceTest {
 
             Optional<Titular> resultado = titularService.findById(titularId);
 
-            assertThat(resultado).isPresent();
-            assertThat(resultado.get().titularId()).isEqualTo(titularId);
-            assertThat(resultado.get().nombre()).isEqualTo("Ana");
-            assertThat(resultado.get().primerApellido()).isEqualTo("Lopez");
+            assertThat(resultado).hasValueSatisfying(t -> {
+                assertThat(t.titularId()).isEqualTo(titularId);
+                assertThat(t.nombre()).isEqualTo("Ana");
+                assertThat(t.primerApellido()).isEqualTo("Lopez");
+            });
         }
 
         @Test
@@ -98,7 +99,7 @@ class TitularServiceTest {
 
             Optional<Titular> resultado = titularService.findById(titularCOP.titularId());
 
-            assertThat(resultado.get().monedaPreferida()).isEqualTo("COP");
+            assertThat(resultado).hasValueSatisfying(t -> assertThat(t.monedaPreferida()).isEqualTo("COP"));
         }
 
         @Test
@@ -111,7 +112,7 @@ class TitularServiceTest {
 
             Optional<Titular> resultado = titularService.findById(titularBogota.titularId());
 
-            assertThat(resultado.get().zonaHoraria()).isEqualTo("America/Bogota");
+            assertThat(resultado).hasValueSatisfying(t -> assertThat(t.zonaHoraria()).isEqualTo("America/Bogota"));
         }
 
         @Test
