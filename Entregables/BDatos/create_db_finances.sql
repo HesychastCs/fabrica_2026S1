@@ -1,3 +1,13 @@
+-- Drop tables in dependency order
+DROP TABLE IF EXISTS transacciones_metas;
+DROP TABLE IF EXISTS transacciones;
+DROP TABLE IF EXISTS presupuestos;
+DROP TABLE IF EXISTS reportes;
+DROP TABLE IF EXISTS metas_ahorro;
+DROP TABLE IF EXISTS categorias;
+DROP TABLE IF EXISTS titulares_financieros;
+
+-- Create tables
 create table titulares_financieros
 (
     titular_id       uuid                        default gen_random_uuid() not null,
