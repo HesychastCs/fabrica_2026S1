@@ -8,15 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.application.query.TransactionListFilter;
 import com.example.demo.application.service.TransactionService;
@@ -29,6 +21,7 @@ import com.example.demo.infra.rest.dto.TransactionResponse;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "https://front-end-fe20261.vercel.app")
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
