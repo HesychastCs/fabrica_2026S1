@@ -278,8 +278,9 @@ class TransactionServiceTest {
 
             List<Transaction> result = transactionService.findAll(filter);
 
-            assertThat(result).isNotEmpty();
-            assertThat(result).allMatch(t -> t.tipo() == tipo);
+            assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(t -> t.tipo() == tipo);
         }
     }
 
