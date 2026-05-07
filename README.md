@@ -4,11 +4,11 @@
 Este repositorio contiene la documentación técnica y el diseño de base de datos para un ecosistema de microservicios enfocado en la seguridad, finanzas y notificaciones.
 
 # 🦉 Correspondiente al Sprint 2
-* [🕯️ Drive con los entregables por punto](https://drive.google.com/drive/folders/1sowGdyeyib2fK5G16eQEUK08eGlpDDaV?usp=sharing)
-
 * [Ver Consultas Identificadas](./Entregables/BDatos/Consultas_principales.pdf)
 * [Ver Script de Despliegue](./Entregables/BDatos/create_db_finances.sql)
 * [Ver Modelo Fisico de MS Finanzas](./Entregables/BDatos/finances_diag.webp)
+* [Ver Modelo Fisico de MS Seguridad](./Entregables/BDatos/Ms_Seguridad.webp)
+* [Ver Modelo Fisico de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
 * [Ver MER](./Entregables/BDatos/MER_finanzas.jpeg)
 * [Ver Documento para la Estimación de Volumen de Datos](./Entregables/BDatos/Volumen_de_Datos_por_Tabla.pdf)
 
