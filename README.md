@@ -9,6 +9,7 @@ Este repositorio contiene la documentación técnica y el diseño de base de dat
 * [Ver Consultas Identificadas](./Entregables/BDatos/Consultas_principales.pdf)
 * [Ver Script de Despliegue](./Entregables/BDatos/create_db_finances.sql)
 * [Ver Modelo Fisico de MS Finanzas](./Entregables/BDatos/finances_diag.webp)
+* [Ver Documento para la Estimación de Volumen de Datos](./Entregables/BDatos/Volumen_de_Datos_por_Tabla.pdf)
 
 
 # 🦉 Correspondiente al Sprint 1
