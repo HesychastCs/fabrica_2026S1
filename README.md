@@ -11,6 +11,7 @@ Este repositorio contiene la documentación técnica y el diseño de base de dat
 * [Ver Modelo Fisico de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
 * [Ver MER](./Entregables/BDatos/MER_finanzas.jpeg)
 * [Ver Documento para la Estimación de Volumen de Datos](./Entregables/BDatos/Volumen_de_Datos_por_Tabla.pdf)
+* [Ver Documento de Esquema de Seguridad y Roles](./Entregables/BDatos/Esquema_de_Seguridad_y_Roles.pdf)
 
 
 # 🦉 Correspondiente al Sprint 1
