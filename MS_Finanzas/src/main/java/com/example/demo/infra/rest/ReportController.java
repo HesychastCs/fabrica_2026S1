@@ -1,10 +1,7 @@
 package com.example.demo.infra.rest;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.application.service.ReportService;
 import com.example.demo.domain.model.Report;
@@ -15,6 +12,7 @@ import com.example.demo.infra.rest.dto.ReportResponse;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "https://front-end-fe20261.vercel.app")
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
