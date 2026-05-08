@@ -21,7 +21,7 @@ import com.example.demo.infra.rest.dto.TransactionResponse;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "https://front-end-fe20261.vercel.app")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {

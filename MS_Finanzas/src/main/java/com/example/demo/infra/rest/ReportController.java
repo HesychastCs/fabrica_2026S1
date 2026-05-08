@@ -12,7 +12,7 @@ import com.example.demo.infra.rest.dto.ReportResponse;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "https://front-end-fe20261.vercel.app")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
