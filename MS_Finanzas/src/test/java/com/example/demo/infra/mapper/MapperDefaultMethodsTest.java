@@ -82,19 +82,20 @@ class MapperDefaultMethodsTest {
         assertThat(mapper.mapTitularId(titularId).titularId()).isEqualTo(titularId);
     }
 
-    @Test
-    void savingGoalRequestMapper_createTitular_requiresTitularId() {
-        SavingGoalRequestMapper mapper = new SavingGoalRequestMapper() {
-            @Override
-            public com.example.demo.domain.model.SavingGoal toDomain(SavingGoalRequest request) {
-                return null;
-            }
-        };
+   @Test
+void savingGoalRequestMapper_createTitular_requiresTitularId() {
+    SavingGoalRequestMapper mapper = new SavingGoalRequestMapper() {
+        @Override
+        public com.example.demo.domain.model.SavingGoal toDomain(SavingGoalRequest request) {
+            return null;
+        }
+    };
 
-        assertThatThrownBy(() -> mapper.createTitular(new SavingGoalRequest("Vacaciones", 1000.0, java.time.LocalDate.now(), null)))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("titularId");
-    }
+    SavingGoalRequest request = new SavingGoalRequest("Vacaciones", 1000.0, java.time.LocalDate.now(), null);
+    assertThatThrownBy(() -> mapper.createTitular(request))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("titularId");
+}
 
     @Test
     void transactionResponseMapper_stringToUuid_handlesNullAndValidValues() {
