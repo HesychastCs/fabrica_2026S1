@@ -28,9 +28,9 @@ public class CategoryEntity {
     @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+   /* @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "titular_id")
-    private TitularEntity titular;
+    private TitularEntity titular;*/
 
     @JsonIgnore
     @OneToMany(mappedBy = "categoria", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
