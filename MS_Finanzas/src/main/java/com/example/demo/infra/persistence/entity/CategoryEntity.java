@@ -3,7 +3,6 @@ package com.example.demo.infra.persistence.entity;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,17 +21,16 @@ import lombok.Data;
 @Data
 public class CategoryEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy=GenerationType.UUID)
     private UUID categoriaId;
 
-    @Column(name = "nombre", nullable = false, unique = true)
+    @Column(name="nombre", nullable=false, unique=true)
     private String nombre;
 
-   /* @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "titular_id")
-    private TitularEntity titular;*/
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="titular_id")
+    private TitularEntity titular;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "categoria", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy="categoria", cascade={CascadeType.MERGE, CascadeType.PERSIST})
     private List<TransactionEntity> transacciones;
 }
