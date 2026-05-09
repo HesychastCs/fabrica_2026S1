@@ -18,7 +18,20 @@ import jakarta.validation.Valid;
 
 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+        origins = {
+                "https://front-end-fe20261.vercel.app",
+                "https://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
+        },
+        allowedHeaders = "*",
+        methods = {
+                RequestMethod.GET,
+                RequestMethod.POST,
+                RequestMethod.PUT,
+                RequestMethod.DELETE,
+                RequestMethod.OPTIONS
+        }
+)
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
