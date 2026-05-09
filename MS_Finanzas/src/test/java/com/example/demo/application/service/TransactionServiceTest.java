@@ -278,6 +278,7 @@ class TransactionServiceTest {
 
             List<Transaction> result = transactionService.findAll(filter);
 
+            // FIX: verificar que no está vacía antes de usar allMatch
             assertThat(result)
                     .isNotEmpty()
                     .allMatch(t -> t.tipo() == tipo);
