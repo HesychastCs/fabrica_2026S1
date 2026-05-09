@@ -236,8 +236,9 @@ class SavingGoalServiceTest {
 
                         Optional<SavingGoal> resultado = savingGoalService.findById(goalId);
 
-                        assertThat(resultado).isPresent();
-                        assertThat(resultado.get().nombre()).isEqualTo("Vacaciones");
+                        assertThat(resultado).hasValueSatisfying(sg ->
+                            assertThat(sg.nombre()).isEqualTo("Vacaciones")
+                        );
                 }
 
                 @Test

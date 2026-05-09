@@ -138,8 +138,9 @@ class CategoryServiceTest {
 
             Optional<Category> resultado = categoryService.findById(categoriaId);
 
-            assertThat(resultado).isPresent();
-            assertThat(resultado.get().nombre()).isEqualTo("Salud");
+            assertThat(resultado).hasValueSatisfying(c ->
+                assertThat(c.nombre()).isEqualTo("Salud")
+            );
         }
 
         @Test

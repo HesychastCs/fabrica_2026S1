@@ -4,7 +4,6 @@ import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +60,7 @@ public class TransactionController {
         );
         List<Transaction> transactions = transactionService.findAll(filter);
         return ResponseEntity.ok(
-            transactions.stream().map(transactionResponseMapper::toResponse).collect(Collectors.toList())
+            transactions.stream().map(transactionResponseMapper::toResponse).toList()
         );
     }
 
