@@ -1,0 +1,34 @@
+name: CI MS Finanzas
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'MS_Finanzas/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Esto le dice a GitHub que todos los comandos 'run' se ejecuten dentro de esa carpeta
+    defaults:
+      run:
+        working-directory: ./MS_Finanzas
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar entorno (Ej: Node.js)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Correr tests
+        run: npm test
+
+      #   name: Construir proyecto
+      #   run: npm run buildild
