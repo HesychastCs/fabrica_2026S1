@@ -18,8 +18,8 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(
         origins = {
-                "https://front-end-fe20261.vercel.app",
-                "https://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
+                "http://front-end-fe20261.vercel.app",
+                "http://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
         },
         allowedHeaders = "*",
         methods = {
