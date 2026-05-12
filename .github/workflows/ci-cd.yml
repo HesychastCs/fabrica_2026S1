@@ -20,10 +20,10 @@ jobs:
           cache: maven
 
       - name: Dar permisos al wrapper de Maven
-        run: chmod +x demo-deploy/mvnw
+        run: chmod +x "MS_Finanzas [demo]/mvnw"
 
       - name: Construir aplicación
-        run: cd demo-deploy && ./mvnw clean package -DskipTests
+        run: cd "MS_Finanzas [demo]" && ./mvnw clean package -DskipTests
 
       - name: Desplegar en Render
         run: curl "$RENDER_DEPLOY_HOOK"
