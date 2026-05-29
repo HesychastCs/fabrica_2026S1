@@ -315,4 +315,74 @@ class SavingGoalServiceTest {
                         verify(savingGoalRepositoryPort).deleteById(goalId);
                 }
         }
+
+        @Nested
+        @DisplayName("Branches de validación sin cubrir")
+        class ValidacionesFaltantes {
+
+                @Test
+                @DisplayName("addSavingGoal con goal null lanza IllegalArgumentException")
+                void addSavingGoal_nullGoal_throwsIllegalArgument() {
+                        assertThatThrownBy(() -> savingGoalService.addSavingGoal(null))
+                                        .isInstanceOf(IllegalArgumentException.class)
+                                        .hasMessageContaining("La meta no puede ser nula");
+                }
+
+                @Test
+                @DisplayName("addSavingGoal con titular null lanza IllegalArgumentException")
+                void addSavingGoal_titularNull_throwsIllegalArgument() {
+                        SavingGoal request = new SavingGoal(null, "Meta sin titular", 1_000_000.0,
+                                        0, null, LocalDate.now().plusMonths(1), null);
+
+                        assertThatThrownBy(() -> savingGoalService.addSavingGoal(request))
+                                        .isInstanceOf(IllegalArgumentException.class)
+                                        .hasMessageContaining("El titular es obligatorio");
+
+                        verify(savingGoalRepositoryPort, never()).save(any());
+                }
+
+                @Test
+                @DisplayName("addSavingGoal con monto null lanza IllegalArgumentException")
+                void addSavingGoal_montoNull_throwsIllegalArgument() {
+                        SavingGoal request = new SavingGoal(null, "Meta monto null", null,
+                                        0, null, LocalDate.now().plusMonths(1), titular);
+
+                        assertThatThrownBy(() -> savingGoalService.addSavingGoal(request))
+                                        .isInstanceOf(IllegalArgumentException.class)
+                                        .hasMessageContaining("El monto debe ser mayor a 0");
+
+                        verify(savingGoalRepositoryPort, never()).save(any());
+                }
+
+                @Test
+                @DisplayName("addSavingGoal con nombre null lanza IllegalArgumentException")
+                void addSavingGoal_nombreNull_throwsIllegalArgument() {
+                        SavingGoal request = new SavingGoal(null, null, 1_000_000.0,
+                                        0, null, LocalDate.now().plusMonths(1), titular);
+
+                        assertThatThrownBy(() -> savingGoalService.addSavingGoal(request))
+                                        .isInstanceOf(IllegalArgumentException.class)
+                                        .hasMessageContaining("El nombre es obligatorio");
+
+                        verify(savingGoalRepositoryPort, never()).save(any());
+                }
+
+                @Test
+                @DisplayName("updateSavingGoal con mismo nombre no invoca validación de duplicados")
+                void updateSavingGoal_mismoNombre_noVerificaDuplicados() {
+                        UUID goalId = UUID.randomUUID();
+                        SavingGoal existente = new SavingGoal(goalId, "Vacaciones", 5_000_000.0,
+                                        10, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(6), titular);
+                        SavingGoal actualizada = new SavingGoal(goalId, "Vacaciones", 8_000_000.0,
+                                        10, GoalStatus.EN_PROGRESO, LocalDate.now().plusMonths(12), titular);
+
+                        when(savingGoalRepositoryPort.findById(goalId)).thenReturn(Optional.of(existente));
+                        when(savingGoalRepositoryPort.update(eq(goalId), any())).thenReturn(actualizada);
+
+                        SavingGoal resultado = savingGoalService.updateSavingGoal(goalId, actualizada);
+
+                        assertThat(resultado.montoObjetivo()).isEqualTo(8_000_000.0);
+                        verify(savingGoalRepositoryPort, never()).existsByNombre(any());
+                }
+        }
 }
