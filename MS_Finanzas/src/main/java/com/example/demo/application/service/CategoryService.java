@@ -47,13 +47,14 @@ public class CategoryService implements AddCategoryUseCase, RetrieveCategoryUseC
 
     @Override
     public Category updateCategory(UUID categoryId, Category category) {
-        categoryRepositoryPort.findById(categoryId)
+        Category existing = categoryRepositoryPort.findById(categoryId)
             .orElseThrow(() -> new ResourceNotFoundException("La categoria no fue encontrada"));
-        
-        if (categoryRepositoryPort.existsByNameAndTitularId(category.nombre(), category.titular().titularId())) {
+
+        if (!existing.nombre().equals(category.nombre()) &&
+            categoryRepositoryPort.existsByNameAndTitularId(category.nombre(), category.titular().titularId())) {
             throw new CategoryAlreadyExistsException(category.nombre());
         }
-        
+
         return categoryRepositoryPort.update(categoryId, category);
     }
 

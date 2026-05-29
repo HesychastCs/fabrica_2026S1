@@ -212,5 +212,21 @@ class CategoryServiceTest {
 
             verify(categoryRepositoryPort, never()).deleteById(any());
         }
+
+        @Test
+        @DisplayName("updateCategory - mismo nombre no lanza excepcion de duplicado")
+        void updateCategory_mismoNombre_noLanzaExcepcion() {
+            UUID categoriaId = UUID.randomUUID();
+            Category existente = new Category(categoriaId, "Salud", titular);
+            Category mismoNombre = new Category(categoriaId, "Salud", titular);
+
+            when(categoryRepositoryPort.findById(categoriaId)).thenReturn(Optional.of(existente));
+            when(categoryRepositoryPort.update(categoriaId, mismoNombre)).thenReturn(mismoNombre);
+
+            Category resultado = categoryService.updateCategory(categoriaId, mismoNombre);
+
+            assertThat(resultado.nombre()).isEqualTo("Salud");
+            verify(categoryRepositoryPort, never()).existsByNameAndTitularId(any(), any());
+        }
     }
 }
