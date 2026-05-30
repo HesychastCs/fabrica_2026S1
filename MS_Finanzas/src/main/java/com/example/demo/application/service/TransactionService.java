@@ -20,6 +20,7 @@ import com.example.demo.domain.model.Category;
 import com.example.demo.domain.model.EmptyCategoryConstants;
 import com.example.demo.domain.model.Titular;
 import com.example.demo.domain.model.Transaction;
+import com.example.demo.domain.model.TypeTransaction;
 
 @Service
 public class TransactionService implements
@@ -100,5 +101,12 @@ public class TransactionService implements
             .orElseGet(() -> categoryRepositoryPort.save(
                 new Category(null, EmptyCategoryConstants.NAME, null)
             ));
+    }
+
+    @Override
+    public List<Transaction> findFiltered(TypeTransaction tipo, UUID categoriaId, UUID titularId, LocalDate desde,
+            LocalDate hasta) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findFiltered'");
     }
 }

@@ -55,7 +55,7 @@ public class BudgetController {
     @PostMapping
     public ResponseEntity<BudgetResponse> createBudget(@Valid @RequestBody BudgetRequest budgetRequest) {
         Budget budget = budgetRequestMapper.toDomain(budgetRequest);
-        Budget createdBudget = budgetService.addBudget(budget);
+        Budget createdBudget = budgetService.addBudget(budget, budget.fechaInicio(), budget.fechaFinal());
         return new ResponseEntity<>(budgetResponseMapper.toResponse(createdBudget), HttpStatus.CREATED);
     }
     

@@ -116,5 +116,14 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
         return jpaTransactionRepository.sumByTitularAndTypeAndMonth(titularId, type, mes, anho);
     }
 
+    @Override
+    public List<Transaction> findFiltered(TypeTransaction tipo, UUID categoriaId, UUID titularId, LocalDate desde,
+            LocalDate hasta) {
+        return jpaTransactionRepository.findFiltered(tipo, categoriaId, titularId, desde, hasta)
+            .stream()
+            .map(transactionEntityMapper::toDomain)
+            .toList();
+    }
+
 }
 

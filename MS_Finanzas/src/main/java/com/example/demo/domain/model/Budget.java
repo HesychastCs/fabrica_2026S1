@@ -11,6 +11,8 @@ public record Budget(
     Instant fechaCreacion,
     LocalDate fechaInicio,
     LocalDate fechaFinal,
+    BigDecimal gastoAcumulado,
+    BigDecimal montoDisponible,
     Titular titular
 ) {
 
