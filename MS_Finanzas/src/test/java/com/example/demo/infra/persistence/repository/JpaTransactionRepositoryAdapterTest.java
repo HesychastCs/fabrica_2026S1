@@ -136,6 +136,16 @@ class JpaTransactionRepositoryAdapterTest {
     }
 
     @Test
+    void deleteById_existing_deletesSuccessfully() {
+        var id = UUID.randomUUID();
+        when(jpaTransactionRepository.existsById(id)).thenReturn(true);
+
+        adapter.deleteById(id);
+
+        verify(jpaTransactionRepository).deleteById(id);
+    }
+
+    @Test
     void deleteById_missing_throws() {
         var id = UUID.randomUUID();
         when(jpaTransactionRepository.existsById(id)).thenReturn(false);

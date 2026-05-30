@@ -87,6 +87,16 @@ class SavingGoalControllerTest {
     }
 
     @Test
+    void updateSavingGoal_shouldReturnOkWithUpdatedResponse() {
+        SavingGoalRequest request = new SavingGoalRequest("Vacaciones Actualizada", 6000000.0, LocalDate.of(2027, 6, 30), titularId);
+
+        ResponseEntity<SavingGoalResponse> result = controller.updateSavingGoal(goalId, request);
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isEqualTo(response);
+    }
+
+    @Test
     void deleteSavingGoal_shouldReturnNoContent() {
         ResponseEntity<Void> result = controller.deleteSavingGoal(goalId);
 

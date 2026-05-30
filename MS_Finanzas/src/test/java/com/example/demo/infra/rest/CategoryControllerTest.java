@@ -83,6 +83,16 @@ class CategoryControllerTest {
     }
 
     @Test
+    void updateCategory_shouldReturnOkWithUpdatedResponse() {
+        CategoryRequest request = new CategoryRequest("Salud Actualizada", titularId);
+
+        ResponseEntity<CategoryResponse> result = controller.updateCategory(categoryId, request);
+
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isEqualTo(response);
+    }
+
+    @Test
     void deleteCategory_shouldReturnNoContent() {
         ResponseEntity<Void> result = controller.deleteCategory(categoryId);
 
