@@ -440,10 +440,6 @@ class TransactionServiceTest {
             Transaction gasto2 = new Transaction(UUID.randomUUID(), "Compra 2", null,
                     BigDecimal.valueOf(200_000), TypeTransaction.GASTO,
                     LocalDate.of(2026, 3, 20), categoriaAlimentacion, titularBase);
-            Transaction ingreso = new Transaction(UUID.randomUUID(), "Salario", null,
-                    BigDecimal.valueOf(3_500_000), TypeTransaction.INGRESO,
-                    LocalDate.of(2026, 3, 1), categoriaAlimentacion, titularBase);
-
             TransactionListFilter filter = new TransactionListFilter(Optional.of(TypeTransaction.GASTO), Optional.empty(),
                     Optional.empty());
             when(transactionRepositoryPort.findAll(filter)).thenReturn(List.of(gasto2, gasto1));
