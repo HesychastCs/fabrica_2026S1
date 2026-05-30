@@ -2,9 +2,6 @@ package com.example.demo.domain.validation;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
 
 class SavingGoalValidatorTest {
