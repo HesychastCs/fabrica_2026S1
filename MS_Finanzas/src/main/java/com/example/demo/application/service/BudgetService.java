@@ -18,7 +18,6 @@ import com.example.demo.application.usecase.GetBudgetUseCase;
 import com.example.demo.application.usecase.UpdateBudgetUseCase;
 import com.example.demo.domain.exception.ResourceNotFoundException;
 import com.example.demo.domain.model.Budget;
-import com.example.demo.domain.model.Transaction;
 import com.example.demo.domain.model.TypeTransaction;
 
 @Service
@@ -35,42 +34,21 @@ public class BudgetService implements AddBudgetUseCase, GetBudgetUseCase, Update
 
     @Override
     public Optional<Budget> findById(UUID id) {
-        return budgetRepositoryPort.findById(id);
+        return budgetRepositoryPort.findById(id).map(this::recalculateBudgetAmounts);
     }
     
     @Override
     public List<Budget> findAll() {
-        return budgetRepositoryPort.findAll();
+        return budgetRepositoryPort.findAll().stream()
+            .map(this::recalculateBudgetAmounts)
+            .toList();
     }
     @Override
     public Budget addBudget(Budget budget, LocalDate from, LocalDate to) {
         titularRepositoryPort.findById(budget.titular().titularId())
         .orElseThrow(() -> new ResourceNotFoundException("El titular no fue encontrado"));
 
-        List<Transaction> transactions = transactionRepositoryPort.findFiltered(
-            TypeTransaction.GASTO,
-            null,
-            budget.titular().titularId(),
-            from,
-            to
-        );
-        BigDecimal gastoAcumulado = transactions.stream()
-            .map(Transaction::monto)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-        
-        BigDecimal montoDisponible = budget.montoLimite().subtract(gastoAcumulado);
-
-        budget = new Budget(
-            null,
-            budget.montoLimite(),
-            Instant.now(),
-            budget.fechaInicio(),
-            budget.fechaFinal(),
-            gastoAcumulado,
-            montoDisponible,
-            budget.titular()
-        );
-        return budgetRepositoryPort.save(budget);
+        return budgetRepositoryPort.save(recalculateBudgetAmounts(budget));
     }
 
     @Override
@@ -78,31 +56,18 @@ public class BudgetService implements AddBudgetUseCase, GetBudgetUseCase, Update
         budgetRepositoryPort.findById(budgetId)
             .orElseThrow(() -> new ResourceNotFoundException("El presupuesto no fue encontrado"));
         
-        List<Transaction> transactions = transactionRepositoryPort.findFiltered(
-        TypeTransaction.GASTO,
-        null,
-        budget.titular().titularId(),
-        budget.fechaInicio(),
-        budget.fechaFinal()
-    );
-    BigDecimal gastoAcumulado = transactions.stream()
-        .map(Transaction::monto)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-    
-    BigDecimal montoDisponible = budget.montoLimite().subtract(gastoAcumulado);
+        Budget updatedBudget = new Budget(
+            budgetId,
+            budget.montoLimite(),
+            Instant.now(),
+            budget.fechaInicio(),
+            budget.fechaFinal(),
+            BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            budget.titular()
+        );
 
-    Budget updatedBudget = new Budget(
-        budgetId,
-        budget.montoLimite(),
-        budget.fechaCreacion(),
-        budget.fechaInicio(),
-        budget.fechaFinal(),
-        gastoAcumulado,
-        montoDisponible,
-        budget.titular()
-    );
-
-        return budgetRepositoryPort.update(budgetId, updatedBudget);
+        return budgetRepositoryPort.update(budgetId, recalculateBudgetAmounts(updatedBudget));
     }
 
     @Override
@@ -111,5 +76,27 @@ public class BudgetService implements AddBudgetUseCase, GetBudgetUseCase, Update
             .orElseThrow(() -> new ResourceNotFoundException("El presupuesto no fue encontrado"));
         
         budgetRepositoryPort.deleteById(budgetId);
+        }
+
+    private Budget recalculateBudgetAmounts(Budget budget) {
+        BigDecimal gastoAcumulado = transactionRepositoryPort.sumByTitularAndTypeAndDateRange(
+        budget.titular().titularId(),
+        TypeTransaction.GASTO,
+        budget.fechaInicio(),
+        budget.fechaFinal()
+        );
+        
+        BigDecimal montoDisponible = budget.montoLimite().subtract(gastoAcumulado);
+        
+        return new Budget(
+            budget.presupuestoId(),
+            budget.montoLimite(),
+            budget.fechaCreacion(),
+            budget.fechaInicio(),
+            budget.fechaFinal(),
+            gastoAcumulado,
+            montoDisponible,
+            budget.titular()
+        );
     }
 }

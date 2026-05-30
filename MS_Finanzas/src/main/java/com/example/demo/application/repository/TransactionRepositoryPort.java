@@ -26,7 +26,9 @@ public interface TransactionRepositoryPort {
     
     BigDecimal sumByTitularAndTypeAndMonth(UUID titularId, TypeTransaction type, Integer mes, Integer anho);
 
-     List<Transaction> findFiltered(
+    BigDecimal sumByTitularAndTypeAndDateRange(UUID titularId, TypeTransaction type, LocalDate fechaInicio, LocalDate fechaFinal);
+
+    List<Transaction> findFiltered(
         TypeTransaction tipo,
         UUID categoriaId,
         UUID titularId,
