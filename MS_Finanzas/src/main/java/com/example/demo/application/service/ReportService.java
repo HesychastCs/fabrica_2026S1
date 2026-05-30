@@ -39,8 +39,7 @@ public class ReportService implements GenerateReportUseCase{
         BigDecimal aportesMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.APORTE_META, anho, mes));
         BigDecimal retirosMetaAcumulados = nullToZero(transactionRepositoryPort.sumByTitularAndTypeAndMonth(titularId, TypeTransaction.RETIRO_META, anho, mes));
         
-        if (ingresosAcumulados.signum() == 0 && gastosAcumulados.signum() == 0 
-            && aportesMetaAcumulados.signum() == 0 && retirosMetaAcumulados.signum() == 0) {
+        if (sinMovimientos(ingresosAcumulados, gastosAcumulados, aportesMetaAcumulados, retirosMetaAcumulados)) {
             throw new NoTransactionsInMonthException(mes, anho);
         }
 
@@ -51,6 +50,12 @@ public class ReportService implements GenerateReportUseCase{
         
         return reportRepositoryPort.save(report);   
     }
+    private boolean sinMovimientos(BigDecimal ingresos, BigDecimal gastos,
+                                    BigDecimal aportes, BigDecimal retiros) {
+        return ingresos.signum() == 0 && gastos.signum() == 0
+                && aportes.signum() == 0 && retiros.signum() == 0;
+    }
+
     private BigDecimal nullToZero(BigDecimal value) {
         return value == null ? BigDecimal.ZERO : value;
     }

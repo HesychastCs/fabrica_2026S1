@@ -321,10 +321,10 @@ class SavingGoalServiceTest {
         class ValidacionesFaltantes {
 
                 @Test
-                @DisplayName("addSavingGoal con goal null lanza IllegalArgumentException")
-                void addSavingGoal_nullGoal_throwsIllegalArgument() {
+                @DisplayName("addSavingGoal con goal null lanza NullPointerException")
+                void addSavingGoal_nullGoal_throwsNullPointer() {
                         assertThatThrownBy(() -> savingGoalService.addSavingGoal(null))
-                                        .isInstanceOf(IllegalArgumentException.class)
+                                        .isInstanceOf(NullPointerException.class)
                                         .hasMessageContaining("La meta no puede ser nula");
                 }
 

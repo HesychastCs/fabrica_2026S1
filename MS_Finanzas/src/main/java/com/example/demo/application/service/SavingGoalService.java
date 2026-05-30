@@ -2,11 +2,10 @@ package com.example.demo.application.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.repository.SavingGoalRepositoryPort;
@@ -23,8 +22,6 @@ import com.example.demo.domain.model.SavingGoal;
 public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGoalUseCase,
         UpdateSavingGoalUseCase, RemoveSavingGoalUseCase {
 
-    private static final Logger log = LoggerFactory.getLogger(SavingGoalService.class);
-
     private final SavingGoalRepositoryPort savingGoalRepositoryPort;
 
     public SavingGoalService(SavingGoalRepositoryPort savingGoalRepositoryPort) {
@@ -33,12 +30,7 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
 
     @Override
     public SavingGoal addSavingGoal(SavingGoal savingGoal) {
-        log.info("=== VALIDACIONES DE SERVICIO ===");
-
         validateNewGoal(savingGoal);
-
-        log.info("=== TODAS LAS VALIDACIONES PASARON ===");
-
         SavingGoal goal = new SavingGoal(
                 null,
                 savingGoal.nombre(),
@@ -62,8 +54,6 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
 
     @Override
     public SavingGoal updateSavingGoal(UUID goalId, SavingGoal savingGoal) {
-        log.info("=== UPDATE SAVING GOAL ===");
-
         SavingGoal existingGoal = savingGoalRepositoryPort.findById(goalId)
                 .orElseThrow(() -> new SavingGoalNotFoundException(
                         "Meta de ahorro no encontrada con ID: " + goalId));
@@ -92,24 +82,34 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
     }
 
     private void validateNewGoal(SavingGoal savingGoal) {
-        if (savingGoal == null) {
-            throw new IllegalArgumentException("La meta no puede ser nula");
-        }
+        Objects.requireNonNull(savingGoal, "La meta no puede ser nula");
         validateGoalPayload(savingGoal);
-        if (savingGoal.titular() == null || savingGoal.titular().titularId() == null) {
-            throw new IllegalArgumentException("El titular es obligatorio");
-        }
+        requireTitular(savingGoal);
         validateUniqueName(savingGoal.nombre());
     }
 
+    private void requireTitular(SavingGoal savingGoal) {
+        if (savingGoal.titular() == null || savingGoal.titular().titularId() == null) {
+            throw new IllegalArgumentException("El titular es obligatorio");
+        }
+    }
+
     private void validateGoalPayload(SavingGoal savingGoal) {
-        if (isBlank(savingGoal.nombre())) {
+        requireNombre(savingGoal.nombre());
+        requireMontoValido(savingGoal.montoObjetivo());
+        validateFutureDate(savingGoal.fechaLimite());
+    }
+
+    private void requireNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        if (savingGoal.montoObjetivo() == null || savingGoal.montoObjetivo() <= 0) {
+    }
+
+    private void requireMontoValido(Double monto) {
+        if (monto == null || monto <= 0) {
             throw new IllegalArgumentException("El monto debe ser mayor a 0");
         }
-        validateFutureDate(savingGoal.fechaLimite());
     }
 
     private void validateUniqueNameOnUpdate(SavingGoal existingGoal, String newName) {
@@ -128,9 +128,5 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
         if (fechaLimite != null && !fechaLimite.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha límite debe ser una fecha futura");
         }
-    }
-
-    private boolean isBlank(String value) {
-        return value == null || value.trim().isEmpty();
     }
 }
