@@ -5,27 +5,73 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-deploy:
+  test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        module: [ MS_Finanzas, MS_Reportes ]
     steps:
-      - name: Descargar código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: "21"
           cache: maven
 
       - name: Dar permisos al wrapper de Maven
-        run: chmod +x MS_Finanzas*/mvnw
+        run: chmod +x ${{ matrix.module }}/mvnw
 
-      - name: Construir aplicación
-        run: cd MS_Finanzas*/ && ./mvnw clean package -DskipTests
+      - name: Tests
+        run: cd ${{ matrix.module }} && ./mvnw test
 
-      - name: Desplegar en Render
-        run: curl "$RENDER_DEPLOY_HOOK"
+  build-deploy-finanzas:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Dar permisos al wrapper de Maven
+        run: chmod +x MS_Finanzas/mvnw
+
+      - name: Construir MS_Finanzas
+        run: cd MS_Finanzas && ./mvnw clean package -DskipTests
+
+      - name: Desplegar MS_Finanzas en Render
+        if: env.RENDER_DEPLOY_HOOK != ''
+        run: curl -fsS "$RENDER_DEPLOY_HOOK"
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+  build-deploy-reportes:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Dar permisos al wrapper de Maven
+        run: chmod +x MS_Reportes/mvnw
+
+      - name: Construir MS_Reportes
+        run: cd MS_Reportes && ./mvnw clean package -DskipTests
+
+      - name: Desplegar MS_Reportes en Render
+        if: env.RENDER_DEPLOY_HOOK_REPORTES != ''
+        run: curl -fsS "$RENDER_DEPLOY_HOOK_REPORTES"
+        env:
+          RENDER_DEPLOY_HOOK_REPORTES: ${{ secrets.RENDER_DEPLOY_HOOK_REPORTES }}

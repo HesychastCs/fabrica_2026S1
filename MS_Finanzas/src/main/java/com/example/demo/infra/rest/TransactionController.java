@@ -21,20 +21,6 @@ import com.example.demo.infra.rest.dto.TransactionResponse;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(
-        origins = {
-                "https://front-end-fe20261.vercel.app",
-                "https://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
-        },
-        allowedHeaders = "*",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.OPTIONS
-        }
-)
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
@@ -57,13 +43,15 @@ public class TransactionController {
     public ResponseEntity<List<TransactionResponse>> list(
         @RequestParam(required = false) TypeTransaction tipo,
         @RequestParam(required = false) UUID categoriaId,
-        @RequestParam(required = false) String mes
+        @RequestParam(required = false) String mes,
+        @RequestParam(required = false) UUID titularId
     ) {
         Optional<YearMonth> yearMonth = Optional.ofNullable(mes).filter(s -> !s.isBlank()).map(YearMonth::parse);
         TransactionListFilter filter = new TransactionListFilter(
             Optional.ofNullable(tipo),
             Optional.ofNullable(categoriaId),
-            yearMonth
+            yearMonth,
+            Optional.ofNullable(titularId)
         );
         List<Transaction> transactions = transactionService.findAll(filter);
         return ResponseEntity.ok(

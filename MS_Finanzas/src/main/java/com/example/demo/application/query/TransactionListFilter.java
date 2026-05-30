@@ -9,10 +9,13 @@ import com.example.demo.domain.model.TypeTransaction;
 public record TransactionListFilter(
     Optional<TypeTransaction> tipo,
     Optional<UUID> categoriaId,
-    Optional<YearMonth> mes
+    Optional<YearMonth> mes,
+    Optional<UUID> titularId
 ) {
 
     public static TransactionListFilter none() {
-        return new TransactionListFilter(Optional.empty(), Optional.empty(), Optional.empty());
+        return new TransactionListFilter(
+            Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()
+        );
     }
 }

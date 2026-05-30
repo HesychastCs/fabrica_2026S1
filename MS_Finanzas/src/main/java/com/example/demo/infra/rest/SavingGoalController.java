@@ -16,20 +16,6 @@ import com.example.demo.infra.rest.dto.SavingGoalResponse;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(
-        origins = {
-                "http://front-end-fe20261.vercel.app",
-                "http://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
-        },
-        allowedHeaders = "*",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.OPTIONS
-        }
-)
 @RestController
 @RequestMapping("/api/saving-goals")
 public class SavingGoalController {

@@ -12,20 +12,6 @@ import com.example.demo.infra.rest.dto.ReportResponse;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(
-        origins = {
-                "https://front-end-fe20261.vercel.app",
-                "https://front-end-fe20261-c4otfrley-junior-morenos-projects.vercel.app"
-        },
-        allowedHeaders = "*",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.OPTIONS
-        }
-)
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {

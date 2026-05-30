@@ -47,6 +47,13 @@ Gestiona el envío y rastro de alertas, correos electrónicos y notificaciones i
 
 ---
 
+## Observabilidad (Prometheus + Grafana)
+
+Microservicios instrumentados: `MS_Finanzas` (puerto 8080) y `MS_Reportes` (puerto 8081).
+
+* [Guía de métricas y despliegue del stack](./Entregables/Observabilidad/REVISION_METRICAS.md)
+* Stack Docker: [`observability/`](./observability/)
+
 ## Tecnologías Utilizadas
 * **Diseño de Diagramas:** [Draw.io / Diagrams.net](https://app.diagrams.net/)
 * **Documentación:** Google Docs

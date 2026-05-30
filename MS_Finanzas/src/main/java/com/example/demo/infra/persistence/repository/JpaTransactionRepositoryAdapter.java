@@ -42,6 +42,7 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
     public List<Transaction> findAll(TransactionListFilter filter) {
         var tipo = filter.tipo().orElse(null);
         var categoriaId = filter.categoriaId().orElse(null);
+        var titularId = filter.titularId().orElse(null);
         LocalDate desde = null;
         LocalDate hasta = null;
         if (filter.mes().isPresent()) {
@@ -49,7 +50,7 @@ public class JpaTransactionRepositoryAdapter implements TransactionRepositoryPor
             desde = ym.atDay(1);
             hasta = ym.atEndOfMonth();
         }
-        return jpaTransactionRepository.findFiltered(tipo, categoriaId, desde, hasta)
+        return jpaTransactionRepository.findFiltered(tipo, categoriaId, titularId, desde, hasta)
             .stream()
             .map(transactionEntityMapper::toDomain)
             .toList();

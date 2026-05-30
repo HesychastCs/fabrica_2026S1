@@ -26,6 +26,7 @@ public interface JpaTransactionRepository extends JpaRepository<TransactionEntit
         SELECT t FROM TransactionEntity t
         WHERE (:tipo IS NULL OR t.tipo = :tipo)
             AND (:categoriaId IS NULL OR t.categoria.categoriaId = :categoriaId)
+            AND (:titularId IS NULL OR t.titular.titularId = :titularId)
             AND (:desde IS NULL OR t.fecha >= :desde)
             AND (:hasta IS NULL OR t.fecha <= :hasta)
         ORDER BY t.fecha DESC, t.transactionId DESC
@@ -33,6 +34,7 @@ public interface JpaTransactionRepository extends JpaRepository<TransactionEntit
     List<TransactionEntity> findFiltered(
         @Param("tipo") TypeTransaction tipo,
         @Param("categoriaId") UUID categoriaId,
+        @Param("titularId") UUID titularId,
         @Param("desde") LocalDate desde,
         @Param("hasta") LocalDate hasta
     );

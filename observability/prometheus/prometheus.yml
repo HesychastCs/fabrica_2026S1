@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: ms-finanzas-local
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
+        labels:
+          application: demo
+          environment: local
+
+  - job_name: ms-reportes-local
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8081"]
+        labels:
+          application: ms-reportes
+          environment: local
+
+  # Sustituye los hostnames por tus servicios Render (sin https://).
+  # Ver observability/.env.example
+  - job_name: ms-finanzas-render
+    scheme: https
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["REPLACE_FINANZAS_HOST.onrender.com"]
+        labels:
+          application: demo
+          environment: render
+
+  - job_name: ms-reportes-render
+    scheme: https
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["REPLACE_REPORTES_HOST.onrender.com"]
+        labels:
+          application: ms-reportes
+          environment: render

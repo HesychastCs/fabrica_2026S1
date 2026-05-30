@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.repository.SavingGoalRepositoryPort;
@@ -18,12 +16,11 @@ import com.example.demo.domain.exception.DuplicateGoalNameException;
 import com.example.demo.domain.exception.SavingGoalNotFoundException;
 import com.example.demo.domain.model.GoalStatus;
 import com.example.demo.domain.model.SavingGoal;
+import com.example.demo.domain.validation.SavingGoalValidator;
 
 @Service
 public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGoalUseCase,
         UpdateSavingGoalUseCase, RemoveSavingGoalUseCase {
-
-    private static final Logger log = LoggerFactory.getLogger(SavingGoalService.class);
 
     private final SavingGoalRepositoryPort savingGoalRepositoryPort;
 
@@ -33,36 +30,28 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
 
     @Override
     public SavingGoal addSavingGoal(SavingGoal savingGoal) {
-        log.info("=== VALIDACIONES DE SERVICIO ===");
-
-        if (savingGoal == null)
+        if (savingGoal == null) {
             throw new IllegalArgumentException("La meta no puede ser nula");
+        }
 
-        if (savingGoal.nombre() == null || savingGoal.nombre().trim().isEmpty())
-            throw new IllegalArgumentException("El nombre es obligatorio");
+        SavingGoalValidator.validateNombre(savingGoal.nombre());
+        SavingGoalValidator.validateMonto(savingGoal.montoObjetivo());
+        SavingGoalValidator.validateFechaLimite(savingGoal.fechaLimite());
+        SavingGoalValidator.validateTitular(savingGoal.titular());
 
-        if (savingGoal.montoObjetivo() == null || savingGoal.montoObjetivo() <= 0)
-            throw new IllegalArgumentException("El monto debe ser mayor a 0");
-
-        if (savingGoal.fechaLimite() != null && !savingGoal.fechaLimite().isAfter(LocalDate.now()))
-            throw new IllegalArgumentException("La fecha límite debe ser una fecha futura");
-
-        if (savingGoal.titular() == null || savingGoal.titular().titularId() == null)
-            throw new IllegalArgumentException("El titular es obligatorio");
-
-        if (savingGoalRepositoryPort.existsByNombre(savingGoal.nombre()))
+        if (savingGoalRepositoryPort.existsByNombre(savingGoal.nombre())) {
             throw new DuplicateGoalNameException("Ya existe una meta con el nombre: " + savingGoal.nombre());
-
-        log.info("=== TODAS LAS VALIDACIONES PASARON ===");
+        }
 
         SavingGoal goal = new SavingGoal(
-                    null,
-                    savingGoal.nombre(),
-                    savingGoal.montoObjetivo(),
-                    0,
-                    GoalStatus.EN_PROGRESO,
-                    savingGoal.fechaLimite(),
-                    savingGoal.titular());
+            null,
+            savingGoal.nombre(),
+            savingGoal.montoObjetivo(),
+            0,
+            GoalStatus.EN_PROGRESO,
+            savingGoal.fechaLimite(),
+            savingGoal.titular()
+        );
         return savingGoalRepositoryPort.save(goal);
     }
 
@@ -78,34 +67,28 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
 
     @Override
     public SavingGoal updateSavingGoal(UUID goalId, SavingGoal savingGoal) {
-        log.info("=== UPDATE SAVING GOAL ===");
-
         SavingGoal existingGoal = savingGoalRepositoryPort.findById(goalId)
-                .orElseThrow(() -> new SavingGoalNotFoundException(
-                        "Meta de ahorro no encontrada con ID: " + goalId));
+            .orElseThrow(() -> new SavingGoalNotFoundException(
+                "Meta de ahorro no encontrada con ID: " + goalId));
 
-        if (savingGoal.nombre() == null || savingGoal.nombre().trim().isEmpty())
-            throw new IllegalArgumentException("El nombre es obligatorio");
+        SavingGoalValidator.validateNombre(savingGoal.nombre());
+        SavingGoalValidator.validateMonto(savingGoal.montoObjetivo());
+        SavingGoalValidator.validateFechaLimite(savingGoal.fechaLimite());
 
-        if (!existingGoal.nombre().equals(savingGoal.nombre())) {
-            if (savingGoalRepositoryPort.existsByNombre(savingGoal.nombre()))
-                throw new DuplicateGoalNameException("Ya existe una meta con el nombre: " + savingGoal.nombre());
+        if (!existingGoal.nombre().equals(savingGoal.nombre())
+            && savingGoalRepositoryPort.existsByNombre(savingGoal.nombre())) {
+            throw new DuplicateGoalNameException("Ya existe una meta con el nombre: " + savingGoal.nombre());
         }
 
-        if (savingGoal.montoObjetivo() == null || savingGoal.montoObjetivo() <= 0)
-            throw new IllegalArgumentException("El monto debe ser mayor a 0");
-
-        if (savingGoal.fechaLimite() != null && !savingGoal.fechaLimite().isAfter(LocalDate.now()))
-            throw new IllegalArgumentException("La fecha límite debe ser una fecha futura");
-
         SavingGoal updatedGoal = new SavingGoal(
-                goalId,
-                savingGoal.nombre(),
-                savingGoal.montoObjetivo(),
-                existingGoal.avance(),
-                existingGoal.estado(),
-                savingGoal.fechaLimite(),
-                existingGoal.titular());
+            goalId,
+            savingGoal.nombre(),
+            savingGoal.montoObjetivo(),
+            existingGoal.avance(),
+            existingGoal.estado(),
+            savingGoal.fechaLimite(),
+            existingGoal.titular()
+        );
 
         return savingGoalRepositoryPort.update(goalId, updatedGoal);
     }
@@ -113,8 +96,15 @@ public class SavingGoalService implements AddSavingGoalUseCase, RetrieveSavingGo
     @Override
     public void deleteSavingGoalById(UUID goalId) {
         savingGoalRepositoryPort.findById(goalId)
-                .orElseThrow(() -> new SavingGoalNotFoundException(
-                        "Meta de ahorro no encontrada con ID: " + goalId));
+            .orElseThrow(() -> new SavingGoalNotFoundException(
+                "Meta de ahorro no encontrada con ID: " + goalId));
         savingGoalRepositoryPort.deleteById(goalId);
+    }
+
+    public SavingGoal markAsCompleted(UUID goalId) {
+        SavingGoal existing = savingGoalRepositoryPort.findById(goalId)
+            .orElseThrow(() -> new SavingGoalNotFoundException(
+                "Meta de ahorro no encontrada con ID: " + goalId));
+        return savingGoalRepositoryPort.updateAvance(goalId, existing.avance(), GoalStatus.COMPLETADA);
     }
 }
