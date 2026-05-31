@@ -24,7 +24,7 @@ import com.example.demo.infra.rest.dto.BudgetResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/budgets")
+@RequestMapping("/api/v1/budgets")
 public class BudgetController {
     private final BudgetService budgetService;
     private final BudgetResponseMapper budgetResponseMapper;

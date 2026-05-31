@@ -34,7 +34,7 @@ management:
     health:
       show-details: when_authorized
     prometheus:
-      enabled: true
+      access: unrestricted
   metrics:
     tags:
       application: ${spring.application.name}
@@ -44,3 +44,4 @@ server:
 
 jwt:
   secret: ${JWT_SECRET:YmFzZS02NC1lbmNvZGVkLXNlY3JldC1rZXktZm9yLWp3dC10b2tlbi1hdXRoZW50aWNhdGlvbg==}
+  expiration: 86400000

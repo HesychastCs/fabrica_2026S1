@@ -23,7 +23,7 @@ import com.example.demo.infra.rest.dto.TitularResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/titulares")
+@RequestMapping("/api/v1/titulars")
 public class TitularController {
 
     private final TitularService titularService;

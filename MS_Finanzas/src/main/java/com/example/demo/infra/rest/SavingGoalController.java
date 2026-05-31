@@ -4,9 +4,20 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.hateoas.CollectionModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.application.service.SavingGoalService;
 import com.example.demo.domain.model.SavingGoal;
@@ -16,8 +27,6 @@ import com.example.demo.infra.rest.dto.SavingGoalRequest;
 import com.example.demo.infra.rest.dto.SavingGoalResponse;
 
 import jakarta.validation.Valid;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @CrossOrigin(
         origins = {
@@ -34,7 +43,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
         }
 )
 @RestController
-@RequestMapping("/api/saving-goals")
+@RequestMapping("/api/v1/saving-goals")
 public class SavingGoalController {
 
     private final SavingGoalService savingGoalService;
