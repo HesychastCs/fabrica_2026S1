@@ -36,8 +36,8 @@ public class JpaBudgetRepositoryAdapter implements BudgetRepositoryPort {
     @Override
     public Budget save(Budget budget) {
         BudgetEntity budgetEntity = budgetEntityMapper.toEntity(budget);
-        BudgetEntity savedBudgetEntity = jpaBudgetRepository.save(budgetEntity);
-        return budgetEntityMapper.toDomain(savedBudgetEntity);
+        jpaBudgetRepository.save(budgetEntity);
+        return budget;
     }
 
     @Override
@@ -49,8 +49,8 @@ public class JpaBudgetRepositoryAdapter implements BudgetRepositoryPort {
         existingBudgetEntity.setFechaInicio(budget.fechaInicio());
         existingBudgetEntity.setFechaFinal(budget.fechaFinal());
 
-        BudgetEntity updatedBudgetEntity = jpaBudgetRepository.save(existingBudgetEntity);
-        return budgetEntityMapper.toDomain(updatedBudgetEntity);
+        jpaBudgetRepository.save(existingBudgetEntity);
+        return budget;
     }
 
     @Override
