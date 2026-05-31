@@ -1,4 +1,4 @@
-package com.example.demo.domain.exception;
+package com.example.demo.infra.config;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -9,6 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.domain.exception.ApiError;
+import com.example.demo.domain.exception.CategoryAlreadyExistsException;
+import com.example.demo.domain.exception.CategoryInUseException;
+import com.example.demo.domain.exception.NoTransactionsInMonthException;
+import com.example.demo.domain.exception.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -32,6 +38,11 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(fe ->
             errors.put(fe.getField(), fe.getDefaultMessage() != null ? fe.getDefaultMessage() : "inválido")
         );
+
+        ex.getBindingResult().getGlobalErrors().forEach(ge ->
+        errors.put(ge.getObjectName(), ge.getDefaultMessage() != null ? ge.getDefaultMessage() : "inválido")
+        );
+        
         ApiError apiError = new ApiError(
             request.getRequestURI(),
             "Error de validación",
