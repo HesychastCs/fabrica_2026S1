@@ -2,16 +2,19 @@ package com.example.demo.infra.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavingGoalResponse {
+public class SavingGoalResponse extends RepresentationModel<SavingGoalResponse> {
     private UUID goalId;
     private String nombre;
     private Double montoObjetivo;
