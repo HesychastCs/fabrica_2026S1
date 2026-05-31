@@ -1,5 +1,6 @@
 package com.example.demo.application.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.query.TransactionListFilter;
+import com.example.demo.application.repository.BudgetRepositoryPort;
 import com.example.demo.application.repository.CategoryRepositoryPort;
 import com.example.demo.application.repository.TitularRepositoryPort;
 import com.example.demo.application.repository.TransactionRepositoryPort;
@@ -16,6 +18,7 @@ import com.example.demo.application.usecase.DeleteTransactionUseCase;
 import com.example.demo.application.usecase.GetTransactionUseCase;
 import com.example.demo.application.usecase.UpdateTransactionUseCase;
 import com.example.demo.domain.exception.ResourceNotFoundException;
+import com.example.demo.domain.model.Budget;
 import com.example.demo.domain.model.Category;
 import com.example.demo.domain.model.EmptyCategoryConstants;
 import com.example.demo.domain.model.Titular;
@@ -32,19 +35,44 @@ public class TransactionService implements
     private final TransactionRepositoryPort transactionRepositoryPort;
     private final CategoryRepositoryPort categoryRepositoryPort;
     private final TitularRepositoryPort titularRepositoryPort;
+    private final BudgetRepositoryPort budgetRepositoryPort;
 
     public TransactionService(
         TransactionRepositoryPort transactionRepositoryPort,
         CategoryRepositoryPort categoryRepositoryPort,
-        TitularRepositoryPort titularRepositoryPort
+        TitularRepositoryPort titularRepositoryPort,
+        BudgetRepositoryPort budgetRepositoryPort
     ) {
         this.transactionRepositoryPort = transactionRepositoryPort;
         this.categoryRepositoryPort = categoryRepositoryPort;
         this.titularRepositoryPort = titularRepositoryPort;
+        this.budgetRepositoryPort = budgetRepositoryPort;
     }
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
+        if (transaction.tipo() == TypeTransaction.GASTO) {
+        List<Budget> applicableBudgets = budgetRepositoryPort.findByTitularAndDateRange(
+            transaction.titular().titularId(),
+            transaction.fecha()
+        );
+        
+        for (Budget budget : applicableBudgets) {
+            BigDecimal gastoAcumulado = transactionRepositoryPort.sumByTitularAndTypeAndDateRange(
+                transaction.titular().titularId(),
+                TypeTransaction.GASTO,
+                budget.fechaInicio(),
+                budget.fechaFinal()
+            );
+            
+            BigDecimal montoDisponible = budget.montoLimite().subtract(gastoAcumulado);
+            
+            if (montoDisponible.compareTo(transaction.monto()) < 0) {
+                throw new IllegalArgumentException("El gasto excede el monto disponible en el presupuesto");
+            }
+            }
+        }
+
         Transaction prepared = prepareForPersist(transaction, null);
         return transactionRepositoryPort.save(prepared);
     }
@@ -109,4 +137,6 @@ public class TransactionService implements
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findFiltered'");
     }
+
+    
 }

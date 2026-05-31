@@ -1,5 +1,6 @@
 package com.example.demo.infra.persistence.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,4 +59,13 @@ public class JpaBudgetRepositoryAdapter implements BudgetRepositoryPort {
         jpaBudgetRepository.deleteById(budgetId);
     }
 
+    @Override
+    public List<Budget> findByTitularAndDateRange(UUID titularId, LocalDate fecha) {
+        return jpaBudgetRepository.findByTitularAndDateRange(titularId, fecha)
+            .stream()
+            .map(budgetEntityMapper::toDomain)
+            .toList();
+    }
+
+    
 }

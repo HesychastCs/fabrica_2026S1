@@ -1,5 +1,6 @@
 package com.example.demo.application.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,4 +13,5 @@ public interface BudgetRepositoryPort {
     Budget save(Budget budget);
     Budget update(UUID budgetId, Budget budget);
     void deleteById(UUID budgetId);
+    List<Budget> findByTitularAndDateRange(UUID titularId, LocalDate fecha);
 }
