@@ -37,9 +37,7 @@ public class TitularService implements
         if (titular == null || titular.nombre() == null || titular.nombre().isBlank()) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        String token = titular.token() != null && !titular.token().isBlank()
-            ? titular.token()
-            : UUID.randomUUID().toString();
+        
         Instant fechaRegistro = titular.fechaRegistro() != null ? titular.fechaRegistro() : Instant.now();
 
         Titular toSave = new Titular(
@@ -51,7 +49,7 @@ public class TitularService implements
             fechaRegistro,
             titular.monedaPreferida(),
             titular.zonaHoraria(),
-            token
+            null
         );
         return titularRepositoryPort.save(toSave);
     }
