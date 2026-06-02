@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-seguridad
+  labels:
+    app: ms-seguridad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-seguridad
+  template:
+    metadata:
+      labels:
+        app: ms-seguridad
+    spec:
+      containers:
+        - name: ms-seguridad
+          image: localhost:5000/ms-seguridad:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            # 1. Connect to Supabase using the secret
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: db-host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: db-port
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: db-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: db-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: db-password
+            - name: DB_SCHEMA
+              value: seguridad
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: supabase-secrets
+                  key: jwt-secret
+            - name: JWT_EXPIRATION
+              value: "86400000"
+          readinessProbe:
+            httpGet:
+              path: /v3/api-docs
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /v3/api-docs
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+---
+# Expose the Kubernetes Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-seguridad
+spec:
+  type: LoadBalancer
+  selector:
+    app: ms-seguridad
+  ports:
+    - port: 8081
+      targetPort: 8080
