@@ -19,7 +19,9 @@ spec:
           image: localhost:5000/ms-finanzas:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
+              protocol: TCP
           env:
             # 1. Connect to Supabase using the secret
             - name: DB_HOST
@@ -48,7 +50,7 @@ spec:
                   name: supabase-secrets
                   key: db-password
             - name: DB_SCHEMA
-              value: public # set name of the schema from supabase
+              value: "public"
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -56,32 +58,29 @@ spec:
                   key: jwt-secret
             - name: JWT_EXPIRATION
               value: "86400000"
+            - name: PORT
+              value: "8080"
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8080
+              port: http
             initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 5
           livenessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8080
+              port: http
             initialDelaySeconds: 60
             periodSeconds: 15
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
-            limits:
-              cpu: 1000m
-              memory: 1Gi
 ---
 # Expose the Kubernetes Service
 apiVersion: v1
 kind: Service
 metadata:
   name: ms-finanzas
+  labels:
+    app: ms-finanzas
 spec:
   type: LoadBalancer
   selector:
