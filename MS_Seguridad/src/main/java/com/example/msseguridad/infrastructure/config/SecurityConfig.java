@@ -1,7 +1,7 @@
 package com.example.msseguridad.infrastructure.config;
 
-import com.example.msseguridad.infrastructure.security.JwtAuthFilter;
-import com.example.msseguridad.infrastructure.security.UserDetailsServiceImpl;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import com.example.msseguridad.infrastructure.security.JwtAuthFilter;
+import com.example.msseguridad.infrastructure.security.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +48,9 @@ public class SecurityConfig {
                     "/api/v1/auth/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/actuator/**",
+                    "/actuator/health/**"
                 ).permitAll()
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
