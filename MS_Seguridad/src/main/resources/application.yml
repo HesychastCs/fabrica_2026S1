@@ -6,8 +6,8 @@ spring:
     name: ms-seguridad
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?prepareThreshold=0
-    username: postgres.aagdzusmeniqghpykyxs
+    url: jdbc:postgresql://${DB_HOST:aws-1-us-east-2.pooler.supabase.com}:${DB_PORT:6543}/${DB_NAME:postgres}?prepareThreshold=0
+    username: ${DB_USER:postgres.aagdzusmeniqghpykyxs}
     password: ${DB_PASSWORD}
     hikari:
       connection-timeout: 30000
@@ -16,10 +16,10 @@ spring:
       max-lifetime: 30000
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
-        default_schema: seguridad
+        default_schema: ${DB_SCHEMA:seguridad}
     show-sql: true
 
 jwt:

@@ -1,10 +1,10 @@
 spring:
   application:
-    name: demo
+    name: ms-finanzas
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres
-    username: postgres.aagdzusmeniqghpykyxs
+    url: jdbc:postgresql://${DB_HOST:aws-1-us-east-2.pooler.supabase.com}:${DB_PORT:6543}/${DB_NAME:postgres}
+    username: ${DB_USER:postgres.aagdzusmeniqghpykyxs}
     password: ${DB_PASSWORD}
     hikari:
       connection-timeout: 30000
@@ -16,6 +16,7 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
+        default_schema: ${DB_SCHEMA:public}
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   cloud:
