@@ -5,7 +5,7 @@ Este repositorio contiene la documentación técnica y el diseño de base de dat
 
 # 🦉 Correspondiente al Sprint 3
 * [Ver MER de MS Finanzas](./Entregables/BDatos/finances_diag.webp)
-* [Ver MER deMS Seguridad](./Entregables/BDatos/Seguridad.webp)
+* [Ver MER de MS Seguridad](./Entregables/BDatos/Seguridad.webp)
 * [Ver MER de MS Reportes](./Entregables/BDatos/MS_ReportesDesplegado.webp)
 * [Ver MER de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
 * [Ver Trigger y Procedimiento de HU](./Entregables/BDatos/Triggers_y_Procedures_para_las_HU_desarrolladas.md)
