@@ -5,8 +5,8 @@ Este repositorio contiene la documentación técnica y el diseño de base de dat
 
 # 🦉 Correspondiente al Sprint 3
 * [Ver Modelo Físico MS Finanzas](./Entregables/BDatos/finances_diag.webp)
-* [Ver Modelo Físico MS Seguridad](Entregables/BDatos/Seguridad.webp)
-* [Ver Modelo Físico MS Reportes](./Entregables/BDatos/finances_diag.webp)
+* [Ver Modelo Físico MS Seguridad](./Entregables/BDatos/Seguridad.webp)
+* [Ver Modelo Físico MS Reportes](./Entregables/BDatos/MS_ReportesDesplegado.webp)
 * [Ver Modelo Fisico de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
 * [Ver Trigger y Procedimiento de HU](./Entregables/BDatos/finances_diag.webp)
 * [Ver Documento de Estimación de Volumen de datos para Microservicios de Seguridad y Reportes](./Entregables/BDatos/Ms_Notificaciones.webp)
