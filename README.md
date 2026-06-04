@@ -4,11 +4,11 @@
 Este repositorio contiene la documentación técnica y el diseño de base de datos para un ecosistema de microservicios enfocado en la seguridad, finanzas y notificaciones.
 
 # 🦉 Correspondiente al Sprint 3
-* [Ver Modelo Físico MS Finanzas](./Entregables/BDatos/finances_diag.webp)
-* [Ver Modelo Físico MS Seguridad](./Entregables/BDatos/Seguridad.webp)
-* [Ver Modelo Físico MS Reportes](./Entregables/BDatos/MS_ReportesDesplegado.webp)
-* [Ver Modelo Fisico de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
-* [Ver Trigger y Procedimiento de HU](./Entregables/BDatos/Triggers y Procedures para las HU desarrolladas.md)
+* [Ver MER de MS Finanzas](./Entregables/BDatos/finances_diag.webp)
+* [Ver MER deMS Seguridad](./Entregables/BDatos/Seguridad.webp)
+* [Ver MER de MS Reportes](./Entregables/BDatos/MS_ReportesDesplegado.webp)
+* [Ver MER de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
+* [Ver Trigger y Procedimiento de HU](./Entregables/BDatos/Triggers_y_Procedures_para_las_HU_desarrolladas.md)
 * [Ver Documento de Estimación de Volumen de datos para Microservicios de Seguridad y Reportes](./Entregables/BDatos/volumetria.pdf)
 
 # 🦉 Correspondiente al Sprint 2
