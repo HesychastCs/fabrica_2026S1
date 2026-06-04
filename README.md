@@ -9,7 +9,7 @@ Este repositorio contiene la documentación técnica y el diseño de base de dat
 * [Ver Modelo Físico MS Reportes](./Entregables/BDatos/MS_ReportesDesplegado.webp)
 * [Ver Modelo Fisico de MS Notificaciones](./Entregables/BDatos/Ms_Notificaciones.webp)
 * [Ver Trigger y Procedimiento de HU](./Entregables/BDatos/finances_diag.webp)
-* [Ver Documento de Estimación de Volumen de datos para Microservicios de Seguridad y Reportes](./Entregables/BDatos/Informe de volumen de la información de las bases de datos nuevas y actualmente desplegadas.pdf)
+* [Ver Documento de Estimación de Volumen de datos para Microservicios de Seguridad y Reportes](./Entregables/BDatos/volumetria.pdf)
 
 # 🦉 Correspondiente al Sprint 2
 * [Ver Consultas Identificadas](./Entregables/BDatos/Consultas_principales.pdf)
